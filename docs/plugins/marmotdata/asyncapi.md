@@ -1,0 +1,1 @@
+The AsyncAPI plugin catalogues services, channels and message schemas from AsyncAPI v3 specifications. It reads spec files from a local path, S3 bucket or Git repository and emits an asset for each service and channel it finds.

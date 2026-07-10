@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.svg" type="image/svg+xml" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="A registry of plugins for Marmot — the open-source data catalog." />
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover" class="bg-earthy-brown-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+		<div style="display: contents">%sveltekit.body%</div>
+
+		<script>
+			(() => {
+				const saved = localStorage.getItem('theme');
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const theme = saved ? saved : prefersDark ? 'dark' : 'light';
+				if (theme === 'dark') document.documentElement.classList.add('dark');
+			})();
+		</script>
+	</body>
+</html>

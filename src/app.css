@@ -1,0 +1,316 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.glass {
+		background: rgba(255, 255, 255, 0.6);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border: 1px solid rgba(0, 0, 0, 0.08);
+	}
+	.dark .glass {
+		background: rgba(30, 41, 59, 0.6);
+		border-color: rgba(255, 255, 255, 0.08);
+	}
+
+	.glass-card {
+		background: rgba(255, 255, 255, 0.7);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		border: 1px solid rgba(0, 0, 0, 0.08);
+	}
+	.dark .glass-card {
+		background: rgba(30, 41, 59, 0.7);
+		border-color: rgba(255, 255, 255, 0.08);
+	}
+
+	.glass-card-interactive {
+		background: rgba(255, 255, 255, 0.7);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+	.glass-card-interactive:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(210, 90, 48, 0.1);
+	}
+	.dark .glass-card-interactive {
+		background: rgba(30, 41, 59, 0.7);
+		border-color: rgba(255, 255, 255, 0.08);
+	}
+	.dark .glass-card-interactive:hover {
+		box-shadow: 0 8px 24px rgba(210, 90, 48, 0.15);
+	}
+
+	.glass-navbar {
+		background: rgba(254, 252, 251, 0.8);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	}
+	.dark .glass-navbar {
+		background: rgba(26, 26, 26, 0.8);
+		border-bottom-color: rgba(255, 255, 255, 0.08);
+	}
+}
+
+/* ---------------------------------------------------------------------------
+ * Fenced code blocks
+ *
+ * Palette mirrors the Prism theme used by marmot's swizzled docs CodeBlock
+ * (web/docs/src/theme/prismTheme.ts) so highlighted snippets look identical
+ * on both sites. Applied to <pre class="code-block"> emitted by the registry's
+ * render-docs.mjs; inline <code> is untouched (styled inline by prose or the
+ * component that owns it).
+ * ------------------------------------------------------------------------- */
+
+.code-block {
+	background: #f9fafb;
+	color: #1f2937;
+	border-radius: 0.5rem;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.85rem;
+	line-height: 1.55;
+}
+.dark .code-block {
+	background: #1f2937;
+	color: #f3f4f6;
+	border-color: rgba(255, 255, 255, 0.08);
+}
+pre.code-block {
+	overflow-x: auto;
+	padding: 0.9rem 1rem;
+	margin: 1rem 0;
+}
+pre.code-block code.code-block {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	color: inherit;
+	font-size: inherit;
+}
+
+/* Prism token colors — light theme */
+.code-block .token.comment,
+.code-block .token.prolog,
+.code-block .token.doctype,
+.code-block .token.cdata {
+	color: #4a674a;
+	font-style: italic;
+}
+.code-block .token.namespace {
+	opacity: 0.7;
+}
+.code-block .token.string,
+.code-block .token.attr-value {
+	color: #35593b;
+}
+.code-block .token.punctuation,
+.code-block .token.operator {
+	color: #4a674a;
+}
+.code-block .token.entity,
+.code-block .token.url,
+.code-block .token.symbol,
+.code-block .token.number,
+.code-block .token.boolean,
+.code-block .token.variable,
+.code-block .token.constant,
+.code-block .token.property,
+.code-block .token.regex,
+.code-block .token.inserted {
+	color: #7b5935;
+}
+.code-block .token.atrule,
+.code-block .token.keyword,
+.code-block .token.attr-name,
+.code-block .token.selector {
+	color: #8d3718;
+}
+.code-block .token.function,
+.code-block .token.deleted,
+.code-block .token.tag {
+	color: #b34822;
+}
+.code-block .token.function-variable {
+	color: #b34822;
+}
+
+/* Prism token colors — dark theme */
+.dark .code-block .token.comment,
+.dark .code-block .token.prolog,
+.dark .code-block .token.doctype,
+.dark .code-block .token.cdata {
+	color: #a8c5a8;
+}
+.dark .code-block .token.string,
+.dark .code-block .token.attr-value {
+	color: #b9d9b9;
+}
+.dark .code-block .token.punctuation,
+.dark .code-block .token.operator {
+	color: #d1e5d1;
+}
+.dark .code-block .token.entity,
+.dark .code-block .token.url,
+.dark .code-block .token.symbol,
+.dark .code-block .token.number,
+.dark .code-block .token.boolean,
+.dark .code-block .token.variable,
+.dark .code-block .token.constant,
+.dark .code-block .token.property,
+.dark .code-block .token.regex,
+.dark .code-block .token.inserted {
+	color: #f0d97e;
+}
+.dark .code-block .token.atrule,
+.dark .code-block .token.keyword,
+.dark .code-block .token.attr-name,
+.dark .code-block .token.selector {
+	color: #ffa77d;
+}
+.dark .code-block .token.function,
+.dark .code-block .token.deleted,
+.dark .code-block .token.tag {
+	color: #ffb899;
+}
+.dark .code-block .token.function-variable {
+	color: #ffb899;
+}
+
+/* ---------------------------------------------------------------------------
+ * Docusaurus-style admonitions (:::tip / :::warning / :::note / :::info / …)
+ * ------------------------------------------------------------------------- */
+
+.admonition {
+	margin: 1.25rem 0;
+	padding: 0.75rem 1rem 0.9rem;
+	border-radius: 0.5rem;
+	border: 1px solid;
+	border-left-width: 4px;
+}
+.admonition-heading {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-weight: 600;
+	font-size: 0.9rem;
+	line-height: 1.2;
+	margin-bottom: 0.5rem;
+}
+.admonition-heading svg {
+	flex-shrink: 0;
+}
+.admonition-body > :first-child {
+	margin-top: 0;
+}
+.admonition-body > :last-child {
+	margin-bottom: 0;
+}
+.admonition-body p {
+	margin: 0.35rem 0;
+}
+
+.admonition-tip {
+	background: #f4f7f5;
+	border-color: #b9cdb9;
+	border-left-color: #607b60;
+	color: #35593b;
+}
+.admonition-tip .admonition-heading {
+	color: #35593b;
+}
+.dark .admonition-tip {
+	background: rgba(96, 123, 96, 0.15);
+	border-color: rgba(139, 168, 139, 0.35);
+	border-left-color: #8ba88b;
+	color: #d1dfd1;
+}
+.dark .admonition-tip .admonition-heading {
+	color: #d1dfd1;
+}
+
+.admonition-warning,
+.admonition-caution {
+	background: #fdf8f2;
+	border-color: #f6e6c9;
+	border-left-color: #cb9228;
+	color: #7b5935;
+}
+.admonition-warning .admonition-heading,
+.admonition-caution .admonition-heading {
+	color: #c2810f;
+}
+.dark .admonition-warning,
+.dark .admonition-caution {
+	background: rgba(203, 146, 40, 0.12);
+	border-color: rgba(231, 199, 118, 0.3);
+	border-left-color: #e7c776;
+	color: #f6e6c9;
+}
+.dark .admonition-warning .admonition-heading,
+.dark .admonition-caution .admonition-heading {
+	color: #f6e6c9;
+}
+
+.admonition-info {
+	background: #f4f7f9;
+	border-color: #d1dbe2;
+	border-left-color: #607985;
+	color: #355159;
+}
+.admonition-info .admonition-heading {
+	color: #4a656f;
+}
+.dark .admonition-info {
+	background: rgba(96, 121, 133, 0.15);
+	border-color: rgba(162, 180, 198, 0.3);
+	border-left-color: #a2b4c6;
+	color: #d1dbe2;
+}
+.dark .admonition-info .admonition-heading {
+	color: #d1dbe2;
+}
+
+.admonition-note {
+	background: #f9f7f5;
+	border-color: #e2d9d1;
+	border-left-color: #997c60;
+	color: #4d4d4d;
+}
+.admonition-note .admonition-heading {
+	color: #7b5935;
+}
+.dark .admonition-note {
+	background: rgba(153, 124, 96, 0.12);
+	border-color: rgba(226, 217, 209, 0.2);
+	border-left-color: #b8a28b;
+	color: #ececec;
+}
+.dark .admonition-note .admonition-heading {
+	color: #e2d9d1;
+}
+
+.admonition-danger {
+	background: #fff6f3;
+	border-color: #ffd7c8;
+	border-left-color: #d25a30;
+	color: #9d361a;
+}
+.admonition-danger .admonition-heading {
+	color: #c74624;
+}
+.dark .admonition-danger {
+	background: rgba(210, 90, 48, 0.12);
+	border-color: rgba(255, 138, 102, 0.3);
+	border-left-color: #ff8a66;
+	color: #ffbea5;
+}
+.dark .admonition-danger .admonition-heading {
+	color: #ffbea5;
+}

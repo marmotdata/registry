@@ -1,0 +1,393 @@
+# Marmot Plugin Registry — source of truth.
+#
+# Human-editable. Run `pnpm build` (or `node scripts/build.mjs`) to regenerate
+# plugins.json, which is what external apps consume.
+
+schema_version: 1
+
+# Default OCI registry for plugins that don't override with their own `oci`
+# field. The resolved reference for a version is `{oci}/{name}:{version}`.
+default_registry: ghcr.io/marmotdata/plugins
+
+plugins:
+  - namespace: marmotdata
+    name: airflow
+    display_name: Airflow
+    description: Ingest metadata from Apache Airflow including DAGs, tasks, and dataset lineage
+    icon: airflow
+    category: orchestration
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/airflow
+    versions:
+      - version: 0.1.0
+        digest: sha256:c662188fb82735d3d47d80b6e4dcf61e1859c9157476d7f1129f837454236137
+
+  - namespace: marmotdata
+    name: asyncapi
+    display_name: AsyncAPI
+    description: Discover metadata from AsyncAPI v3 specifications including services, channels, and message schemas
+    icon: asyncapi
+    category: api
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/asyncapi
+    versions:
+      - version: 0.1.0
+        digest: sha256:9da5ee4b245eba31497beb75c56ee9ac5d64922e6b6a36885d6a2e8b10cc0f16
+
+  - namespace: marmotdata
+    name: azureblob
+    display_name: Azure Blob Storage
+    description: Discover containers from Azure Blob Storage accounts
+    icon: azureblob
+    category: storage
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/azureblob
+    versions:
+      - version: 0.1.0
+        digest: sha256:fc917d5e319d88a5af1cb1561b3808b755ee532c78fcc2f487a6b041a825ea09
+
+  - namespace: marmotdata
+    name: bigquery
+    display_name: BigQuery
+    description: Discover datasets and tables from Google BigQuery projects
+    icon: bigquery
+    category: data-warehouse
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/bigquery
+    versions:
+      - version: 0.1.0
+        digest: sha256:8db23d8473a0e52af27dde9f3fda2b26373c78a85fcbd69fe2883846439b0521
+
+  - namespace: marmotdata
+    name: clickhouse
+    display_name: ClickHouse
+    description: Discover databases, tables, and views from ClickHouse instances
+    icon: clickhouse
+    category: database
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/clickhouse
+    versions:
+      - version: 0.1.0
+        digest: sha256:786f79c7cfca6cb495b6fd3e765a424eaea49e234931c7baf1d870ab8d7c2889
+
+  - namespace: marmotdata
+    name: confluent
+    display_name: Confluent Cloud
+    description: Discover Kafka topics from Confluent Cloud clusters
+    icon: confluent
+    category: streaming
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/confluent
+    versions:
+      - version: 0.1.0
+        digest: sha256:6823cc1723777d1ace8c32fde6896899178c0232e8d0255a5d7dfe26343b1082
+
+  - namespace: marmotdata
+    name: dbt
+    display_name: dbt
+    description: Ingest metadata from dbt (Data Build Tool) projects including models, tests, and lineage
+    icon: dbt
+    category: transformation
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/dbt
+    versions:
+      - version: 0.1.0
+        digest: sha256:b80fb193b738ba918827f24ce996a3ba289ee4c72a26fc1867cc5bc4c60cbbe6
+
+  - namespace: marmotdata
+    name: deltalake
+    display_name: Delta Lake
+    description: Discover tables from Delta Lake transaction logs on local filesystems
+    icon: deltalake
+    category: data-lake
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/deltalake
+    versions:
+      - version: 0.1.0
+        digest: sha256:eaabd5f07a031d8e5f6b1d4c01102e2e20018dcf2a806db974a553e8b68e4897
+
+  - namespace: marmotdata
+    name: duckdb
+    display_name: DuckDB
+    description: Discover schemas, tables, views and foreign key relationships from DuckDB database files
+    icon: duckdb
+    category: database
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/duckdb
+    versions:
+      - version: 0.1.0
+        digest: sha256:b12d7e94906993828a53d2b8da49c381783353c5b0a2cb4e526b9db51ba10722
+
+  - namespace: marmotdata
+    name: dynamodb
+    display_name: AWS DynamoDB
+    description: Discover DynamoDB tables from AWS accounts
+    icon: dynamodb
+    category: database
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/dynamodb
+    versions:
+      - version: 0.1.0
+        digest: sha256:1522bd911c2b4bf72b8f74e1bd26bd5a4617e39d711ac8e39b47c9a7a2c13970
+
+  - namespace: marmotdata
+    name: elasticsearch
+    display_name: Elasticsearch
+    description: Discover indices, data streams, and aliases from Elasticsearch clusters
+    icon: elasticsearch
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/elasticsearch
+    versions:
+      - version: 0.1.0
+        digest: sha256:c234ce755a298d7b724d823a5c06b7c6d44e42f5c1810fae1241f5381fbdccd9
+
+  - namespace: marmotdata
+    name: gcs
+    display_name: Google Cloud Storage
+    description: Discover buckets from Google Cloud Storage
+    icon: gcs
+    category: storage
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/gcs
+    versions:
+      - version: 0.1.0
+        digest: sha256:69cc8497bfa293b5d6715e96d5971ffa9e2a9edb421a283529eeecc6f395f2e2
+
+  - namespace: marmotdata
+    name: glue
+    display_name: AWS Glue
+    description: Discover jobs, databases, tables and crawlers from AWS Glue
+    icon: glue
+    category: etl
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/glue
+    versions:
+      - version: 0.1.0
+        digest: sha256:8e9a46c862c8c9b68eba56af8fe1d24174aea01b8e00ea6bbfcde0529e1f389b
+
+  - namespace: marmotdata
+    name: iceberg
+    display_name: Apache Iceberg
+    description: Discover namespaces, tables and views from Iceberg catalogs (REST and AWS Glue)
+    icon: iceberg
+    category: data-lake
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/iceberg
+    versions:
+      - version: 0.1.0
+        digest: sha256:0c09ec9097cf83943e4f8e8ac0a7f6edb173cf77074dd1ae4a906192e132f0a3
+
+  - namespace: marmotdata
+    name: kafka
+    display_name: Kafka
+    description: Discover Kafka topics from Kafka clusters
+    icon: kafka
+    category: streaming
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/kafka
+    versions:
+      - version: 0.1.0
+        digest: sha256:e418867fd382ba2792f964c39e737b4921bc3a1826b4edf383cad10c837f14eb
+
+  - namespace: marmotdata
+    name: lambda
+    display_name: AWS Lambda
+    description: Discover Lambda functions from AWS accounts
+    icon: lambda
+    category: compute
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/lambda
+    versions:
+      - version: 0.1.0
+        digest: sha256:6ba939b1df36f48d2f5c1effb5efcb6fd3e024e3984ac71e5ab631926df91932
+
+  - namespace: marmotdata
+    name: mongodb
+    display_name: MongoDB
+    description: Discover databases and collections from MongoDB instances
+    icon: mongodb
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/mongodb
+    versions:
+      - version: 0.1.0
+        digest: sha256:8d14e790aa3b623124c9b28790f6b4b7d48e97570e0c7d46df1def4c07e61ed2
+
+  - namespace: marmotdata
+    name: mysql
+    display_name: MySQL
+    description: Discover databases and tables from MySQL instances
+    icon: mysql
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/mysql
+    versions:
+      - version: 0.1.0
+        digest: sha256:c3617cac4e05abf09248728f9195598f9b22f4feb183edd4ef784d6e2348ab22
+
+  - namespace: marmotdata
+    name: nats
+    display_name: NATS
+    description: Discover JetStream streams from NATS servers
+    icon: nats
+    category: messaging
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/nats
+    versions:
+      - version: 0.1.0
+        digest: sha256:367d05b43b797380cb34d35d847877720f842c9abdb999b977f29b4ca60c85f3
+
+  - namespace: marmotdata
+    name: openapi
+    display_name: OpenAPI
+    description: Discover OpenAPI v3 specifications
+    icon: openapi
+    category: api
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/openapi
+    versions:
+      - version: 0.1.0
+        digest: sha256:5db3c4a7b7ce0e4a6d8b0cc61da466b54c25bd2d824b0056a43ee912e3263bb0
+
+  - namespace: marmotdata
+    name: opensearch
+    display_name: OpenSearch
+    description: Discover indices, data streams, and aliases from OpenSearch clusters
+    icon: opensearch
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/opensearch
+    versions:
+      - version: 0.1.0
+        digest: sha256:88d5ff181cde024896d639e7d56b5ed73ca8dddcf4d1bce7c439a8d3a7d6e86f
+
+  - namespace: marmotdata
+    name: postgresql
+    display_name: PostgreSQL
+    description: Discover databases, schemas, and tables from PostgreSQL instances
+    icon: postgresql
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/postgresql
+    versions:
+      - version: 0.1.0
+        digest: sha256:ee2e828cd2928f4d916f0794dd65c9ad485bf6b9a8a9d74675d720fbe3a1a36a
+
+  - namespace: marmotdata
+    name: redis
+    display_name: Redis
+    description: Discover databases from Redis instances
+    icon: redis
+    category: database
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/redis
+    versions:
+      - version: 0.1.0
+        digest: sha256:0fff8ea40c060f0ce91dc8fd5b4ee8fe6f14b65da4ceea83ef08085272c84459
+
+  - namespace: marmotdata
+    name: redpanda
+    display_name: Redpanda
+    description: Discover topics from Redpanda clusters
+    icon: redpanda
+    category: streaming
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/redpanda
+    versions:
+      - version: 0.1.0
+        digest: sha256:bb8872b59be421dae356917fe56b81bb067609a39214e57d08482a9fdc8b1afc
+
+  - namespace: marmotdata
+    name: s3
+    display_name: AWS S3
+    description: Discover S3 buckets from AWS accounts
+    icon: s3
+    category: storage
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/s3
+    versions:
+      - version: 0.1.0
+        digest: sha256:30813f8d19d0577f673a4790a9de5eaf4fcf46ff150924c7a5f78731a55ab286
+
+  - namespace: marmotdata
+    name: sns
+    display_name: AWS SNS
+    description: Discover SNS topics from AWS accounts
+    icon: sns
+    category: messaging
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/sns
+    versions:
+      - version: 0.1.0
+        digest: sha256:80214e9d174b0e9842a117f7574c6133fde7361a98611f5c1e59c1763e6e5de5
+
+  - namespace: marmotdata
+    name: sqs
+    display_name: AWS SQS
+    description: Discover SQS queues from AWS accounts
+    icon: sqs
+    category: messaging
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/sqs
+    versions:
+      - version: 0.1.0
+        digest: sha256:90ac0fecdb1487db0d9794f03cfbcb7cbbfe7a2814e0a325b0f942acc529f270
+
+  - namespace: marmotdata
+    name: trino
+    display_name: Trino
+    description: Discover catalogs, schemas, and tables from Trino clusters
+    icon: trino
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/trino
+    versions:
+      - version: 0.1.0
+        digest: sha256:7eca87a0c1a654d64d54202bc2bdee22c6b994c8fceb3595b04e82cd98724cf2

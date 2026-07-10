@@ -1,0 +1,36 @@
+The SNS plugin discovers and catalogs Amazon SNS topics across your AWS accounts. It captures topic configurations, subscription details, and tags.
+
+## Required Permissions
+
+<Collapsible
+  title="IAM Policy"
+  icon="mdi:shield-check"
+  policyJson={{
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Action: [
+          "sns:ListTopics",
+          "sns:GetTopicAttributes",
+          "sns:ListTagsForResource"
+        ],
+        Resource: "*"
+      }
+    ]
+  }}
+  minimalPolicyJson={{
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Action: ["sns:ListTopics", "sns:GetTopicAttributes"],
+        Resource: "*"
+      }
+    ]
+  }}
+/>
+
+## AWS Configuration
+
+See [AWS Configuration](./Shared%20Configuration/AWS%20Configuration.md) for the supported AWS configuration options.

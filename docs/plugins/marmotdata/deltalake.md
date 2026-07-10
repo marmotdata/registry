@@ -1,0 +1,1 @@
+The Delta Lake plugin catalogues tables from Delta Lake transaction logs. It reads the `_delta_log` directory at each configured path to capture the table schema, partition columns and current version.
