@@ -1,7 +1,8 @@
-// Copies plugin docs from ~/Code/marmot/web/docs/docs/Plugins/ into this repo
-// at docs/plugins/marmotdata/{name}.md, stripping Docusaurus-only JSX and
+// Copies plugin docs from the marmot repo's web/docs/docs/Plugins/ into this
+// repo at docs/plugins/marmotdata/{name}.md, stripping Docusaurus-only JSX and
 // redundant sections (Configuration and Available Metadata already live on
-// dedicated tabs).
+// dedicated tabs). The marmot repo is assumed to be a sibling checkout
+// (../marmot); set MARMOT_REPO to point elsewhere.
 //
 // Usage:
 //   pnpm import-docs
@@ -13,12 +14,11 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import { homedir } from 'node:os';
 import { load } from 'js-yaml';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
-const marmotRepo = process.env.MARMOT_REPO ?? resolve(homedir(), 'Code', 'marmot');
+const marmotRepo = process.env.MARMOT_REPO ?? resolve(root, '..', 'marmot');
 const docsSource = join(marmotRepo, 'web', 'docs', 'docs', 'Plugins');
 const docsOut = resolve(root, 'docs', 'plugins', 'marmotdata');
 

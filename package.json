@@ -9,6 +9,7 @@
 		"dump-metadata": "node scripts/dump-metadata.mjs",
 		"import-docs": "node scripts/import-docs.mjs",
 		"dev": "pnpm prebuild:data && vite dev",
+		"start": "pnpm dev",
 		"build": "pnpm prebuild:data && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
