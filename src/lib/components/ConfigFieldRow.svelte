@@ -1,14 +1,24 @@
 <script lang="ts">
-	import { Lock } from 'lucide-svelte';
+	import { Asterisk, Lock } from 'lucide-svelte';
 	import type { ConfigField } from '$lib/types';
 	import Self from './ConfigFieldRow.svelte';
 
 	interface Props {
 		field: ConfigField;
 		nested?: boolean;
+		parentRequired?: boolean;
 	}
 
-	let { field, nested = false }: Props = $props();
+	let { field, nested = false, parentRequired = true }: Props = $props();
+
+	// A subfield can be structurally required (e.g. every entry in an object[]
+	// must have `url`) while its parent object is itself optional. Tooltip
+	// text is scoped so it doesn't read as "you must fill this in" when the
+	// parent object was itself optional.
+	let requiredTooltip = $derived(
+		field.required && !parentRequired ? 'Required when this object is provided' : 'Required'
+	);
+	let childrenInherit = $derived(parentRequired && (field.required ?? false));
 
 	const TYPE_STYLES: Record<string, string> = {
 		string:
@@ -55,9 +65,11 @@
 		</span>
 		{#if field.required}
 			<span
-				class="flex-shrink-0 text-[0.65rem] font-semibold uppercase tracking-wide text-earthy-terracotta-700 dark:text-earthy-terracotta-400"
+				class="flex-shrink-0 inline-flex items-center text-earthy-terracotta-700 dark:text-earthy-terracotta-400"
+				title={requiredTooltip}
+				aria-label={requiredTooltip}
 			>
-				required
+				<Asterisk size={14} strokeWidth={2.5} />
 			</span>
 		{/if}
 		{#if field.sensitive}
@@ -131,7 +143,7 @@
 				class="mt-2 border-l-2 border-earthy-terracotta-200 dark:border-earthy-terracotta-800 divide-y divide-gray-100 dark:divide-gray-800"
 			>
 				{#each field.fields as sub (sub.name)}
-					<Self field={sub} nested />
+					<Self field={sub} nested parentRequired={childrenInherit} />
 				{/each}
 			</div>
 		{/if}

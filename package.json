@@ -7,7 +7,6 @@
 	"scripts": {
 		"prebuild:data": "node scripts/build.mjs && node scripts/render-docs.mjs",
 		"dump-metadata": "node scripts/dump-metadata.mjs",
-		"import-docs": "node scripts/import-docs.mjs",
 		"dev": "pnpm prebuild:data && vite dev",
 		"start": "pnpm dev",
 		"build": "pnpm prebuild:data && vite build",

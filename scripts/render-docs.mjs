@@ -103,7 +103,7 @@ const docsIn = resolve(root, 'docs', 'plugins');
 const docsOut = resolve(root, 'static', 'docs');
 
 if (!existsSync(docsIn)) {
-	console.log(`No source docs at ${docsIn}. Run \`pnpm import-docs\` first.`);
+	console.log(`No source docs at ${docsIn}.`);
 	process.exit(0);
 }
 
