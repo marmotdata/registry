@@ -15,6 +15,17 @@ const config = {
 		}),
 		paths: {
 			base: /** @type {'' | `/${string}`} */ (process.env.BASE_PATH ?? '')
+		},
+		prerender: {
+			handleHttpError: ({ path, referrer, message, status }) => {
+				// Plugin detail pages embed upstream docs whose links reference
+				// pages in the source doc site, not routes here. Let those 404s pass.
+				if (status === 404) {
+					console.warn(`Skipping broken link: ${path} (from ${referrer})`);
+					return;
+				}
+				throw new Error(message);
+			}
 		}
 	}
 };
