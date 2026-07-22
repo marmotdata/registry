@@ -20,6 +20,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check out marmot for plugin metadata
+        uses: actions/checkout@v4
+        with:
+          repository: marmotdata/marmot
+          path: marmot
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
       - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v4
@@ -28,6 +38,11 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+
+      - name: Dump plugin metadata
+        env:
+          MARMOT_REPO: ${{ github.workspace }}/marmot
+        run: pnpm dump-metadata
 
       - name: Compute base path
         id: base
