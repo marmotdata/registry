@@ -5,8 +5,9 @@
 	"type": "module",
 	"packageManager": "pnpm@11.3.0",
 	"scripts": {
-		"prebuild:data": "node scripts/build.mjs && node scripts/render-docs.mjs",
-		"dump-metadata": "node scripts/dump-metadata.mjs",
+		"prebuild:data": "node scripts/build.mjs && node scripts/pull-plugin-artifacts.mjs && node scripts/render-docs.mjs",
+		"pull-plugin-artifacts": "node scripts/pull-plugin-artifacts.mjs",
+		"sync-plugin-versions": "node scripts/sync-plugin-versions.mjs",
 		"dev": "pnpm prebuild:data && vite dev",
 		"start": "pnpm dev",
 		"build": "pnpm prebuild:data && vite build",

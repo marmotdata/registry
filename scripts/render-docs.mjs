@@ -1,5 +1,10 @@
-// Renders docs/plugins/*/*.md → static/docs/*/*.html so the plugin detail
-// pages can embed the HTML directly, keeping `marked` out of the client bundle.
+// Renders plugin README markdown → static/docs/*/*.html so detail pages
+// embed the HTML directly, keeping `marked` out of the client bundle.
+//
+// Input: build/plugin-docs/{namespace}/{name}.md, written by
+// pull-plugin-artifacts.mjs. Plugin READMEs target the Docusaurus docs
+// site (frontmatter + MDX imports + JSX components); sanitizeMdx()
+// strips those bits so we can render plain markdown.
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -99,11 +104,11 @@ marked.use({
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
-const docsIn = resolve(root, 'docs', 'plugins');
+const docsIn = resolve(root, 'build', 'plugin-docs');
 const docsOut = resolve(root, 'static', 'docs');
 
 if (!existsSync(docsIn)) {
-	console.log(`No source docs at ${docsIn}.`);
+	console.log(`No pulled docs at ${docsIn}. Run pull-plugin-artifacts first.`);
 	process.exit(0);
 }
 
@@ -121,7 +126,7 @@ for (const namespace of readdirSync(docsIn, { withFileTypes: true })) {
 	mkdirSync(nsOut, { recursive: true });
 	for (const file of readdirSync(nsIn)) {
 		if (!file.endsWith('.md')) continue;
-		const md = readFileSync(join(nsIn, file), 'utf8');
+		const md = sanitizeMdx(readFileSync(join(nsIn, file), 'utf8'));
 		const html = marked.parse(md);
 		writeFileSync(join(nsOut, file.replace(/\.md$/, '.html')), html);
 		count++;
@@ -129,3 +134,30 @@ for (const namespace of readdirSync(docsIn, { withFileTypes: true })) {
 }
 
 console.log(`Rendered ${count} doc${count === 1 ? '' : 's'} → ${docsOut.replace(root + '/', '')}`);
+
+// Plugin READMEs target Docusaurus. Registry HTML can't run JSX or MDX
+// imports, and duplicating our own status badges makes the page noisy.
+// sanitizeMdx strips those bits so registry rendering stays plain
+// markdown → HTML.
+function sanitizeMdx(md) {
+	let out = md;
+
+	// YAML frontmatter at the top of the file.
+	out = out.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+
+	// MDX-style imports: `import { X } from 'y';` on their own line.
+	out = out.replace(/^import\s+[^\n]+;?\s*$/gm, '');
+
+	// PascalCase JSX components (self-closing and paired), which appear
+	// in Docusaurus READMEs as `<CalloutCard ... />`. Regular HTML tags
+	// (lowercase or standard uppercase like `<DIV>`) are left alone;
+	// only PascalCase names — the MDX convention for React components —
+	// are stripped. Multi-line matches use [\s\S] to cross newlines.
+	out = out.replace(/<([A-Z][A-Za-z0-9]*)[\s\S]*?\/>/g, '');
+	out = out.replace(/<([A-Z][A-Za-z0-9]*)[\s\S]*?<\/\1>/g, '');
+
+	// Collapse the extra blank lines the strips leave behind.
+	out = out.replace(/\n{3,}/g, '\n\n');
+
+	return out;
+}
