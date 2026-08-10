@@ -37,6 +37,7 @@
 		homeHref = 'https://marmotdata.io',
 		leftItems = [
 			{ label: 'Docs', href: 'https://marmotdata.io/docs/introduction' },
+			{ label: 'Plugins', href: 'https://plugins.marmotdata.io' },
 			{ label: 'Pricing', href: 'https://marmotdata.io/pricing' },
 			{ label: 'Resources', href: 'https://marmotdata.io/resources' },
 			{ label: 'Blog', href: 'https://marmotdata.io/blog' },
