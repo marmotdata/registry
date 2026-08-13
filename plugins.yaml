@@ -243,6 +243,20 @@ plugins:
         digest: sha256:d5a8b13dae19604a98dedfacc0b62b84f6d7152f91e2b253e045ab1439337e73
 
   - namespace: marmotdata
+    name: googledrive
+    display_name: Google Drive
+    description: Discover folders, files and spreadsheets from Google Drive
+    icon: googledrive
+    category: storage
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/googledrive
+    versions:
+      - version: 0.1.0
+        digest: sha256:c87cd14a373be0ee43dbbd817bb53c8b2b3c42ebf1bc2f74be10eb530a7cf8a0
+
+  - namespace: marmotdata
     name: iceberg
     display_name: Apache Iceberg
     description: Discover namespaces, tables and views from Iceberg catalogs (REST and AWS Glue)
