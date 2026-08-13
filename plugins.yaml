@@ -371,6 +371,20 @@ plugins:
         digest: sha256:e94bd8262385f74c4c46df2642f92c30786ab5253c3bdec1983aac6a509b46dc
 
   - namespace: marmotdata
+    name: openmetadata
+    display_name: OpenMetadata
+    description: Import tables, topics, dashboards, pipelines, models, glossary and lineage from an OpenMetadata instance
+    icon: openmetadata
+    category: catalog
+    status: experimental
+    features: [Assets, Lineage, Run History, Glossary]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/openmetadata
+    versions:
+      - version: 0.1.0
+        digest: sha256:9432dc78a087f61eea27f2145245daed1da723ce5e78a90954de9e2490722cb3
+
+  - namespace: marmotdata
     name: opensearch
     display_name: OpenSearch
     description: Discover indices, data streams, and aliases from OpenSearch clusters
