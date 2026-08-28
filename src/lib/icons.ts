@@ -48,6 +48,7 @@ const PLUGIN_ICONS: Record<string, IconSpec> = {
 	redpanda: { local: 'redpanda', ext: 'svg' },
 	s3: { iconify: 'logos:aws-s3' },
 	sns: { iconify: 'logos:aws-sns' },
+	sqlite: { local: 'sqlite', ext: 'png' },
 	sqs: { iconify: 'logos:aws-sqs' },
 	trino: { iconify: 'simple-icons:trino' }
 };

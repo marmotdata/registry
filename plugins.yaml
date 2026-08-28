@@ -495,6 +495,20 @@ plugins:
         digest: sha256:dbeb46c3728fe22fd8e458509924ddde42f49d6a023b35a11c362f6da1af0b67
 
   - namespace: marmotdata
+    name: sqlite
+    display_name: SQLite
+    description: Discover tables, views and foreign key relationships from SQLite database files
+    icon: sqlite
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/sqlite
+    versions:
+      - version: 0.1.0
+        digest: sha256:44f83605fb712cdb9660deef838ae73ac7b22f096e3c6a8fe605fc62e2764254
+
+  - namespace: marmotdata
     name: sqs
     display_name: AWS SQS
     description: Discover SQS queues from AWS accounts
