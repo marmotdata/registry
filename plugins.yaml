@@ -24,6 +24,21 @@ plugins:
       - version: 0.1.1
         digest: sha256:91846d7342b1cfc13e6d8d2c75ef5d7e222f8f6d82ba5fc9d40cdc3584853199
 
+
+  - namespace: marmotdata
+    name: amundsen
+    display_name: Amundsen
+    description: Import tables, columns, owners, usage, dashboards and lineage from an Amundsen metadata graph
+    icon: openmetadata
+    category: catalog
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/amundsen
+    versions:
+      - version: 0.1.0
+        digest: sha256:a911ad6b1236a18b4766e786ec316278fa55d554146705fd62d4127f47c5f06d
+
   - namespace: marmotdata
     name: asyncapi
     display_name: AsyncAPI
@@ -39,6 +54,21 @@ plugins:
         digest: sha256:9da5ee4b245eba31497beb75c56ee9ac5d64922e6b6a36885d6a2e8b10cc0f16
       - version: 0.1.1
         digest: sha256:3856eb7d71bc2b5f424548e826fdbad54abd55ccd045f395b2208518544cfa39
+
+
+  - namespace: marmotdata
+    name: athena
+    display_name: Athena
+    description: Discover databases, tables, workgroups and saved queries from Amazon Athena
+    icon: athena
+    category: data-warehouse
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/athena
+    versions:
+      - version: 0.1.0
+        digest: sha256:1bec493078bf6890140c9cc7dc26700c3530ab20c54a7544e87e167e0dbff763
 
   - namespace: marmotdata
     name: azureblob
@@ -56,6 +86,7 @@ plugins:
       - version: 0.1.1
         digest: sha256:9f1c16369d591bdcc77c53111e1bc95f5c69aba31eba8b2ddbc708f08eb7d5d4
 
+
   - namespace: marmotdata
     name: bigquery
     display_name: BigQuery
@@ -71,6 +102,35 @@ plugins:
         digest: sha256:8db23d8473a0e52af27dde9f3fda2b26373c78a85fcbd69fe2883846439b0521
       - version: 0.1.1
         digest: sha256:43ebc2e3d3bc6edc0a7ecb038de218a9563a38061cd95334c2681a12bf0285d6
+
+
+  - namespace: marmotdata
+    name: bigtable
+    display_name: Bigtable
+    description: Discover instances, tables and column families from Google Cloud Bigtable
+    icon: bigtable
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/bigtable
+    versions:
+      - version: 0.1.0
+        digest: sha256:2f3898dc9083b465dc2d7387a1219afab0e1cd95f01a71f91f7599a4d1fb0b48
+
+  - namespace: marmotdata
+    name: cassandra
+    display_name: Cassandra
+    description: Discover keyspaces, tables and materialized views from Apache Cassandra clusters
+    icon: cassandra
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/cassandra
+    versions:
+      - version: 0.1.0
+        digest: sha256:b0085294dbce95eb9e3d95e695871ba29695b31c712c5bc3232dae856dda67f7
 
   - namespace: marmotdata
     name: clickhouse
@@ -88,6 +148,35 @@ plugins:
       - version: 0.1.1
         digest: sha256:48d34aeae7966af714bb9d0b2a8da5d5bc35339f99d688edac711c68427b6eb4
 
+
+  - namespace: marmotdata
+    name: cloudrun
+    display_name: Cloud Run
+    description: Discover services and jobs from Google Cloud Run
+    icon: cloud-run
+    category: container
+    status: experimental
+    features: [Assets, Lineage, Run History]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/cloudrun
+    versions:
+      - version: 0.1.0
+        digest: sha256:032f06ab5df1e6e8e6d0d5cc27b72ae0a07afc395acc19e8023b721043cf4de9
+
+  - namespace: marmotdata
+    name: cockroachdb
+    display_name: CockroachDB
+    description: Discover databases, tables, views and foreign key relationships from CockroachDB clusters
+    icon: cockroachdb
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/cockroachdb
+    versions:
+      - version: 0.1.0
+        digest: sha256:e408fa332e94663a786e45e152be775daf221c8e7202d666eb72fff0a8acfbd0
+
   - namespace: marmotdata
     name: confluent
     display_name: Confluent Cloud
@@ -101,6 +190,35 @@ plugins:
         digest: sha256:6823cc1723777d1ace8c32fde6896899178c0232e8d0255a5d7dfe26343b1082
       - version: 0.1.1
         digest: sha256:da30d249e65a932387ad98bab901494c77e091f0cc5409ab8acb2c806e98669f
+
+
+  - namespace: marmotdata
+    name: couchbase
+    display_name: Couchbase
+    description: Discover buckets, scopes and collections from Couchbase clusters
+    icon: couchbase
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/couchbase
+    versions:
+      - version: 0.1.0
+        digest: sha256:5c07bb43a2b9fbbef8c55ac9f9e3337111ac650fe0cafb080481661144cdd73a
+
+  - namespace: marmotdata
+    name: dagster
+    display_name: Dagster
+    description: Discover jobs, ops and software-defined assets from Dagster
+    icon: dagster
+    category: orchestration
+    status: experimental
+    features: [Assets, Lineage, Run History]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/dagster
+    versions:
+      - version: 0.1.0
+        digest: sha256:d8838010a1637727e28bc7602609fabf3c79f1ec3fa39a504b1584832fdc9f0e
 
   - namespace: marmotdata
     name: dbt
@@ -118,6 +236,7 @@ plugins:
       - version: 0.1.1
         digest: sha256:4c6945ade804467d9a0a7058f11c3bbfeded6845b289e5b1639e7b6d3c29249b
 
+
   - namespace: marmotdata
     name: deltalake
     display_name: Delta Lake
@@ -134,6 +253,21 @@ plugins:
       - version: 0.1.1
         digest: sha256:fdbc13217037be52a1802af710dd22f605e2b08c52ee49ff574b9e9ccddd5c10
 
+
+  - namespace: marmotdata
+    name: doris
+    display_name: Doris
+    description: Discover databases, tables, views and materialized views from Apache Doris clusters
+    icon: doris
+    category: data-warehouse
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/doris
+    versions:
+      - version: 0.1.0
+        digest: sha256:a1dee565093dc46dbf6b27e68f8bd053a550c5080770ba4eac328da03c3433e7
+
   - namespace: marmotdata
     name: duckdb
     display_name: DuckDB
@@ -147,6 +281,7 @@ plugins:
         digest: sha256:b12d7e94906993828a53d2b8da49c381783353c5b0a2cb4e526b9db51ba10722
       - version: 0.1.1
         digest: sha256:61ee4cbea18537fbc0ef08a1316202b3d5a3792946fead400fbbf5f46abc4c4f
+
 
   - namespace: marmotdata
     name: dynamodb
@@ -164,6 +299,7 @@ plugins:
       - version: 0.1.1
         digest: sha256:dbff08ed9a166d3bdd7b7a31a0156b7082084b1d8ae5ab3f42d0771e25ecde7f
 
+
   - namespace: marmotdata
     name: eks
     display_name: Amazon EKS
@@ -179,6 +315,7 @@ plugins:
         digest: sha256:0913f6bbec8ccef40ef516001bcdaabd2ada9e7e2a0e5c5c462a6fb1d7263c66
       - version: 0.1.1
         digest: sha256:a36e9a9551a5a28716a4a581173b91857d1f8228a587b361c91add241cd23065
+
 
   - namespace: marmotdata
     name: elasticsearch
@@ -196,6 +333,49 @@ plugins:
       - version: 0.1.1
         digest: sha256:f8fb1edb3fe43e1d337a4544b79890d961b83b62e32bb3ea82f8d71f16f8f79c
 
+
+  - namespace: marmotdata
+    name: firebase
+    display_name: Firebase
+    description: Discover Firestore collections and Realtime Database instances from Firebase projects
+    icon: firebase
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/firebase
+    versions:
+      - version: 0.1.0
+        digest: sha256:4262bd7ee7d3242c5b56de46934d633ea09ba60c407fb6299593561a27f46082
+
+  - namespace: marmotdata
+    name: firehose
+    display_name: Firehose
+    description: Discover Amazon Data Firehose delivery streams from AWS accounts
+    icon: firehose
+    category: messaging
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/firehose
+    versions:
+      - version: 0.1.0
+        digest: sha256:82c45bb45e5a3230ca5b7fe9b6a190f5ba3f5c552ef3141736cf0d2b0956bdb8
+
+  - namespace: marmotdata
+    name: flink
+    display_name: Flink
+    description: Discover jobs and their vertices from an Apache Flink JobManager
+    icon: flink
+    category: orchestration
+    status: experimental
+    features: [Assets, Lineage, Run History]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/flink
+    versions:
+      - version: 0.1.0
+        digest: sha256:09067901a5f4bfb6dd9eb7ec18c9b66a0f934827ca1a583866f6cd240b7dda81
+
   - namespace: marmotdata
     name: gcs
     display_name: Google Cloud Storage
@@ -209,6 +389,7 @@ plugins:
         digest: sha256:69cc8497bfa293b5d6715e96d5971ffa9e2a9edb421a283529eeecc6f395f2e2
       - version: 0.1.2
         digest: sha256:1d0cca335576f2f188333ec1b5c69790bab90abc77f4682ba4cbbf527561fda2
+
 
   - namespace: marmotdata
     name: gke
@@ -226,6 +407,7 @@ plugins:
       - version: 0.1.1
         digest: sha256:fdc2b41898489bcff7cd0f3acfcfebcafd1e64906a6225c03d7bb0dfb3f97634
 
+
   - namespace: marmotdata
     name: glue
     display_name: AWS Glue
@@ -242,6 +424,21 @@ plugins:
       - version: 0.1.1
         digest: sha256:d5a8b13dae19604a98dedfacc0b62b84f6d7152f91e2b253e045ab1439337e73
 
+
+  - namespace: marmotdata
+    name: gluepipeline
+    display_name: Glue Pipelines
+    description: Discover workflows, tasks and run history from AWS Glue
+    icon: glue
+    category: orchestration
+    status: experimental
+    features: [Assets, Lineage, Run History]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/gluepipeline
+    versions:
+      - version: 0.1.0
+        digest: sha256:7f9faf89e1f83ec9118f2f8e4e687e6a9dbff9feaf9699a318ef6841320026a9
+
   - namespace: marmotdata
     name: googledrive
     display_name: Google Drive
@@ -255,6 +452,35 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:c87cd14a373be0ee43dbbd817bb53c8b2b3c42ebf1bc2f74be10eb530a7cf8a0
+
+
+  - namespace: marmotdata
+    name: grafana
+    display_name: Grafana
+    description: Discover dashboards, panels and data sources from Grafana
+    icon: grafana
+    category: dashboard
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/grafana
+    versions:
+      - version: 0.1.0
+        digest: sha256:83e20f3a38cc4d62e6473b53f77b3116867ca7693d0a8e58e2fe47a30621c2a7
+
+  - namespace: marmotdata
+    name: hive
+    display_name: Hive
+    description: Discover databases, tables and views from Apache Hive through HiveServer2
+    icon: hive
+    category: data-warehouse
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/hive
+    versions:
+      - version: 0.1.0
+        digest: sha256:cf9359abb0cbaa7a731fceba99399ee3e85d5e36ecb0bbc5df3c25d554c979b2
 
   - namespace: marmotdata
     name: iceberg
@@ -272,6 +498,7 @@ plugins:
       - version: 0.1.1
         digest: sha256:61215be83089325176a1233ad7cdee661f3e3324e2410dc533a67ba99794946e
 
+
   - namespace: marmotdata
     name: kafka
     display_name: Kafka
@@ -287,6 +514,35 @@ plugins:
         digest: sha256:e418867fd382ba2792f964c39e737b4921bc3a1826b4edf383cad10c837f14eb
       - version: 0.1.1
         digest: sha256:03a747d401f3a1869b23047b09a6335fb03e7d7bc6d6dff870b102df53d44793
+
+
+  - namespace: marmotdata
+    name: kafkaconnect
+    display_name: Kafka Connect
+    description: Discover connectors, tasks and topics from Kafka Connect clusters with lineage to the systems they move data between
+    icon: kafka
+    category: orchestration
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/kafkaconnect
+    versions:
+      - version: 0.1.0
+        digest: sha256:95e5cbb490fbdbfefc63bd476cc115206374e48c4c3089c9448c00d0b7fad3cc
+
+  - namespace: marmotdata
+    name: kinesis
+    display_name: Kinesis
+    description: Discover Kinesis Data Streams from AWS accounts
+    icon: kinesis
+    category: messaging
+    status: experimental
+    features: [Assets]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/kinesis
+    versions:
+      - version: 0.1.0
+        digest: sha256:57ea839ad665315a194567ad5af8c6c5f651ce0b504a5179f1f28f5ca33f1e27
 
   - namespace: marmotdata
     name: kubernetes
@@ -304,6 +560,7 @@ plugins:
       - version: 0.1.1
         digest: sha256:45ceccb81961aaecb08d7641a27a89733b2ca65b614bcb771b023d9a133414fa
 
+
   - namespace: marmotdata
     name: lambda
     display_name: AWS Lambda
@@ -319,6 +576,49 @@ plugins:
         digest: sha256:6ba939b1df36f48d2f5c1effb5efcb6fd3e024e3984ac71e5ab631926df91932
       - version: 0.1.1
         digest: sha256:a11bd76b1931bd751165ee6b81c68fe6cfb1359637bb38d78f4bafa6f3fc72f1
+
+
+  - namespace: marmotdata
+    name: mariadb
+    display_name: MariaDB
+    description: Discover databases, tables, views and sequences from MariaDB servers
+    icon: mariadb
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/mariadb
+    versions:
+      - version: 0.1.0
+        digest: sha256:da65ecd0efe1d716733d78e9245dce870117aaf0f40311249e422ee773f56d01
+
+  - namespace: marmotdata
+    name: metabase
+    display_name: Metabase
+    description: Discover dashboards, charts and models from Metabase, with lineage from the tables they read
+    icon: metabase
+    category: dashboard
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/metabase
+    versions:
+      - version: 0.1.0
+        digest: sha256:833edd1039ee599786ab0b1106c7f8071617d5d475f5a22a60448ca9700127e8
+
+  - namespace: marmotdata
+    name: mlflow
+    display_name: MLflow
+    description: Discover registered models, experiments and training datasets from MLflow tracking servers
+    icon: mlflow
+    category: ml
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/mlflow
+    versions:
+      - version: 0.1.0
+        digest: sha256:65698c6f583bc79b1eb93b704d81180cb6759d9f282d65c0736c67ca01e612d0
 
   - namespace: marmotdata
     name: mongodb
@@ -336,6 +636,21 @@ plugins:
       - version: 0.1.1
         digest: sha256:88d648a7650b714383430e1cfbaf2558a98a511395465506768e1b8ed6f22049
 
+
+  - namespace: marmotdata
+    name: mssql
+    display_name: SQL Server
+    description: Discover databases, tables, views and routines from Microsoft SQL Server instances
+    icon: sql-server
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/mssql
+    versions:
+      - version: 0.1.0
+        digest: sha256:5c0e0aab7ce9a4da91f71b4936d785fedcb39d57e41eadfefe72533875c5f3ac
+
   - namespace: marmotdata
     name: mysql
     display_name: MySQL
@@ -351,6 +666,7 @@ plugins:
         digest: sha256:c3617cac4e05abf09248728f9195598f9b22f4feb183edd4ef784d6e2348ab22
       - version: 0.1.1
         digest: sha256:2d8978d57bd8c77a62f04d99563928913b6c15c82663487ad44d9de043402049
+
 
   - namespace: marmotdata
     name: nats
@@ -368,6 +684,21 @@ plugins:
       - version: 0.1.1
         digest: sha256:a0a3345d89749cbe1ab274ee31277f72ba88d276962120f7bd974813f6946d67
 
+
+  - namespace: marmotdata
+    name: nifi
+    display_name: NiFi
+    description: Discover process groups, processors and data flow lineage from Apache NiFi
+    icon: nifi
+    category: orchestration
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/nifi
+    versions:
+      - version: 0.1.0
+        digest: sha256:a7426e783f21148641ff40add2023084300e410a1a78a19c97f7b6a0863b1cd4
+
   - namespace: marmotdata
     name: openapi
     display_name: OpenAPI
@@ -384,6 +715,7 @@ plugins:
       - version: 0.1.1
         digest: sha256:e94bd8262385f74c4c46df2642f92c30786ab5253c3bdec1983aac6a509b46dc
 
+
   - namespace: marmotdata
     name: openmetadata
     display_name: OpenMetadata
@@ -397,6 +729,7 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:9432dc78a087f61eea27f2145245daed1da723ce5e78a90954de9e2490722cb3
+
 
   - namespace: marmotdata
     name: opensearch
@@ -413,6 +746,35 @@ plugins:
         digest: sha256:88d5ff181cde024896d639e7d56b5ed73ca8dddcf4d1bce7c439a8d3a7d6e86f
       - version: 0.1.1
         digest: sha256:99e58d9257c73993e7ef55ea04fc47165be5480514a7f886b3ee5080fedab58a
+
+
+  - namespace: marmotdata
+    name: oracle
+    display_name: Oracle
+    description: Discover schemas, tables, views, materialized views and stored procedures from Oracle databases
+    icon: oracle
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/oracle
+    versions:
+      - version: 0.1.0
+        digest: sha256:05b8c80f15b14899863b3910daf434bb3632255ffa83c67ae43184da2b60b0cd
+
+  - namespace: marmotdata
+    name: pinot
+    display_name: Pinot
+    description: Discover tables, schemas and stream lineage from Apache Pinot clusters
+    icon: pinot
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/pinot
+    versions:
+      - version: 0.1.0
+        digest: sha256:ea790668e83013124878d3ed663e8438080b0edb13063823f81210a889bf8e41
 
   - namespace: marmotdata
     name: postgresql
@@ -432,6 +794,77 @@ plugins:
       - version: 0.1.2
         digest: sha256:22fcab37ccfa4b5db2d3e93252e40046962ed7d626b1f8fadb6225d0ebd4c25f
 
+
+  - namespace: marmotdata
+    name: prefect
+    display_name: Prefect
+    description: Discover flows, tasks and run history from Prefect Cloud or a self-hosted Prefect server
+    icon: prefect
+    category: orchestration
+    status: experimental
+    features: [Assets, Lineage, Run History]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/prefect
+    versions:
+      - version: 0.1.0
+        digest: sha256:aa2fe51aeea0962e74a045c1a6b951df1c235f783d4c7b10f896afddba432abe
+
+  - namespace: marmotdata
+    name: presto
+    display_name: Presto
+    description: Discover catalogs, schemas, tables and views from Presto clusters
+    icon: presto
+    category: data-warehouse
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/presto
+    versions:
+      - version: 0.1.0
+        digest: sha256:9f529b35fd5dd1ff9bc839bf963ff6a43789c9ab134089ea449d373022b3e05b
+
+  - namespace: marmotdata
+    name: pubsub
+    display_name: Google Pub/Sub
+    description: Discover topics and subscriptions from Google Cloud Pub/Sub
+    icon: googlepubsub
+    category: messaging
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/pubsub
+    versions:
+      - version: 0.1.0
+        digest: sha256:605062beab41bd49ffb7b7723ff4ee94274e81a9c77d12e2331768a7c5bc522c
+
+  - namespace: marmotdata
+    name: questdb
+    display_name: QuestDB
+    description: Discover tables, views and materialized views from QuestDB instances
+    icon: questdb
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/questdb
+    versions:
+      - version: 0.1.0
+        digest: sha256:33b17b3b07d7c9c5f5cf3ef0362bb7b9d6bc52c0c3440b1af8d79c982d70783c
+
+  - namespace: marmotdata
+    name: redash
+    display_name: Redash
+    description: Discover dashboards, charts, queries and data sources from Redash
+    icon: redash
+    category: dashboard
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/redash
+    versions:
+      - version: 0.1.0
+        digest: sha256:58856ceddd378163e5ada18d4add5c2702c1a56c4b8466a2ed63b9714acea9d0
+
   - namespace: marmotdata
     name: redis
     display_name: Redis
@@ -448,6 +881,7 @@ plugins:
       - version: 0.1.1
         digest: sha256:1c6bc0810d9c041bcb437b7c6f9cfdd1bba7aa4a05f19f44b15a1ad9f81f52dd
 
+
   - namespace: marmotdata
     name: redpanda
     display_name: Redpanda
@@ -461,6 +895,7 @@ plugins:
         digest: sha256:bb8872b59be421dae356917fe56b81bb067609a39214e57d08482a9fdc8b1afc
       - version: 0.1.1
         digest: sha256:11acb2c260ad03ba1b06155a87814da170c0ea44708768657ac6dee1fe8cd7b0
+
 
   - namespace: marmotdata
     name: s3
@@ -478,6 +913,35 @@ plugins:
       - version: 0.1.1
         digest: sha256:40e68a9046f63ffc3bf046639cc4b076fcbd7c18888a895e0eaf24fb9f70a60f
 
+
+  - namespace: marmotdata
+    name: sagemaker
+    display_name: SageMaker
+    description: Discover models, endpoints, feature groups and training jobs from Amazon SageMaker
+    icon: sagemaker
+    category: ml
+    status: experimental
+    features: [Assets, Lineage, Run History]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/sagemaker
+    versions:
+      - version: 0.1.0
+        digest: sha256:5789c2062d9eb34919dc1b8984d7319238f0640498655fd3b991436cb65aea86
+
+  - namespace: marmotdata
+    name: sftp
+    display_name: SFTP
+    description: Discover directories and files from an SFTP server
+    icon: sftp
+    category: storage
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/sftp
+    versions:
+      - version: 0.1.0
+        digest: sha256:95812358e51cbdc37157d9ab7ea7e72c278923bde8af95e9fecfe8fbb462d133
+
   - namespace: marmotdata
     name: sns
     display_name: AWS SNS
@@ -494,6 +958,21 @@ plugins:
       - version: 0.1.1
         digest: sha256:dbeb46c3728fe22fd8e458509924ddde42f49d6a023b35a11c362f6da1af0b67
 
+
+  - namespace: marmotdata
+    name: spline
+    display_name: Spline
+    description: Discover Spark applications and their lineage from a Spline server
+    icon: spark
+    category: orchestration
+    status: experimental
+    features: [Assets, Lineage, Run History]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/spline
+    versions:
+      - version: 0.1.0
+        digest: sha256:f3f09cbaedbbabb5a504880d1ea352e0e95ddbfd5db700b4278aa8a28d2df408
+
   - namespace: marmotdata
     name: sqlite
     display_name: SQLite
@@ -507,6 +986,7 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:44f83605fb712cdb9660deef838ae73ac7b22f096e3c6a8fe605fc62e2764254
+
 
   - namespace: marmotdata
     name: sqs
@@ -524,6 +1004,49 @@ plugins:
       - version: 0.1.1
         digest: sha256:6f6577588a1821cfe714e7409a8d8bb32e6db8ee21a4224d30ddf7dbe18c560a
 
+
+  - namespace: marmotdata
+    name: starrocks
+    display_name: StarRocks
+    description: Discover databases, tables, views and materialized views from StarRocks clusters
+    icon: starrocks
+    category: data-warehouse
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/starrocks
+    versions:
+      - version: 0.1.0
+        digest: sha256:46b65f93c32a9cb68ff29ec02329fd23ff3bf67dc255cb021a35af1dcc54b850
+
+  - namespace: marmotdata
+    name: superset
+    display_name: Superset
+    description: Discover dashboards, charts, datasets and database connections from Apache Superset
+    icon: superset
+    category: dashboard
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/superset
+    versions:
+      - version: 0.1.0
+        digest: sha256:2bcd1f16a4bf7e9be9738ab82811ff90ee66bf330580b04f18d2f80c7ab72610
+
+  - namespace: marmotdata
+    name: timescale
+    display_name: TimescaleDB
+    description: Discover databases, tables, hypertables and continuous aggregates from TimescaleDB instances
+    icon: postgresql
+    category: database
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/timescale
+    versions:
+      - version: 0.1.0
+        digest: sha256:8b602b48088786e2275e6a77a02de9053f6d54be4b8597bd0b413486aea0ef49
+
   - namespace: marmotdata
     name: trino
     display_name: Trino
@@ -539,3 +1062,31 @@ plugins:
         digest: sha256:7eca87a0c1a654d64d54202bc2bdee22c6b994c8fceb3595b04e82cd98724cf2
       - version: 0.1.1
         digest: sha256:0280d9194d74a580d6a672dd64566ddcaafe7f983e5f54ea1e7864edf604bd00
+
+  - namespace: marmotdata
+    name: unitycatalog
+    display_name: Unity Catalog
+    description: Discover catalogs, tables, views, volumes, functions and models from Unity Catalog servers
+    icon: databricks
+    category: catalog
+    status: experimental
+    features: [Assets, Lineage]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/unitycatalog
+    versions:
+      - version: 0.1.0
+        digest: sha256:8a1fa0df8b745792f611ae66c70731a5de1ce368fc4d608055c5e8ef4230e238
+
+  - namespace: marmotdata
+    name: vertexai
+    display_name: Vertex AI
+    description: Discover models, endpoints, datasets, feature groups and pipeline jobs from Google Vertex AI
+    icon: vertex-ai
+    category: ml
+    status: experimental
+    features: [Assets, Lineage, Run History]
+    official: true
+    source: https://github.com/marmotdata/marmot/tree/main/plugins/vertexai
+    versions:
+      - version: 0.1.0
+        digest: sha256:b77a90adb81ac8786eae6320469b856ab3e870ff5c7ff5c117dd90caa70cb4d5
