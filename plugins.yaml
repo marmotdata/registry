@@ -29,7 +29,7 @@ plugins:
     name: amundsen
     display_name: Amundsen
     description: Import tables, columns, owners, usage, dashboards and lineage from an Amundsen metadata graph
-    icon: openmetadata
+    icon: amundsen
     category: catalog
     status: experimental
     features: [Assets, Lineage]
@@ -963,7 +963,7 @@ plugins:
     name: spline
     display_name: Spline
     description: Discover Spark applications and their lineage from a Spline server
-    icon: spark
+    icon: spline
     category: orchestration
     status: experimental
     features: [Assets, Lineage, Run History]
@@ -1037,7 +1037,7 @@ plugins:
     name: timescale
     display_name: TimescaleDB
     description: Discover databases, tables, hypertables and continuous aggregates from TimescaleDB instances
-    icon: postgresql
+    icon: timescale
     category: database
     status: experimental
     features: [Assets, Lineage]
