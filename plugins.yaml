@@ -12,7 +12,7 @@ default_registry: ghcr.io/marmotdata/plugins
 plugins:
   - namespace: marmotdata
     name: airflow
-    display_name: Airflow
+    display_name: Apache Airflow
     description: Ingest metadata from Apache Airflow including DAGs, tasks, and dataset lineage
     icon: airflow
     category: orchestration
@@ -58,7 +58,7 @@ plugins:
 
   - namespace: marmotdata
     name: athena
-    display_name: Athena
+    display_name: AWS Athena
     description: Discover databases, tables, workgroups and saved queries from Amazon Athena
     icon: athena
     category: data-warehouse
@@ -89,7 +89,7 @@ plugins:
 
   - namespace: marmotdata
     name: bigquery
-    display_name: BigQuery
+    display_name: Google BigQuery
     description: Discover datasets and tables from Google BigQuery projects
     icon: bigquery
     category: data-warehouse
@@ -106,7 +106,7 @@ plugins:
 
   - namespace: marmotdata
     name: bigtable
-    display_name: Bigtable
+    display_name: Google Bigtable
     description: Discover instances, tables and column families from Google Cloud Bigtable
     icon: bigtable
     category: database
@@ -120,7 +120,7 @@ plugins:
 
   - namespace: marmotdata
     name: cassandra
-    display_name: Cassandra
+    display_name: Apache Cassandra
     description: Discover keyspaces, tables and materialized views from Apache Cassandra clusters
     icon: cassandra
     category: database
@@ -151,7 +151,7 @@ plugins:
 
   - namespace: marmotdata
     name: cloudrun
-    display_name: Cloud Run
+    display_name: Google Cloud Run
     description: Discover services and jobs from Google Cloud Run
     icon: cloud-run
     category: container
@@ -256,7 +256,7 @@ plugins:
 
   - namespace: marmotdata
     name: doris
-    display_name: Doris
+    display_name: Apache Doris
     description: Discover databases, tables, views and materialized views from Apache Doris clusters
     icon: doris
     category: data-warehouse
@@ -302,7 +302,7 @@ plugins:
 
   - namespace: marmotdata
     name: eks
-    display_name: Amazon EKS
+    display_name: AWS EKS
     description: Discover namespaces, services, workloads, and cron jobs from Amazon EKS clusters
     icon: eks
     category: compute
@@ -336,7 +336,7 @@ plugins:
 
   - namespace: marmotdata
     name: firebase
-    display_name: Firebase
+    display_name: Google Firebase
     description: Discover Firestore collections and Realtime Database instances from Firebase projects
     icon: firebase
     category: database
@@ -350,7 +350,7 @@ plugins:
 
   - namespace: marmotdata
     name: firehose
-    display_name: Firehose
+    display_name: AWS Firehose
     description: Discover Amazon Data Firehose delivery streams from AWS accounts
     icon: firehose
     category: messaging
@@ -364,7 +364,7 @@ plugins:
 
   - namespace: marmotdata
     name: flink
-    display_name: Flink
+    display_name: Apache Flink
     description: Discover jobs and their vertices from an Apache Flink JobManager
     icon: flink
     category: orchestration
@@ -427,7 +427,7 @@ plugins:
 
   - namespace: marmotdata
     name: gluepipeline
-    display_name: Glue Pipelines
+    display_name: AWS Glue Pipelines
     description: Discover workflows, tasks and run history from AWS Glue
     icon: glue
     category: orchestration
@@ -470,7 +470,7 @@ plugins:
 
   - namespace: marmotdata
     name: hive
-    display_name: Hive
+    display_name: Apache Hive
     description: Discover databases, tables and views from Apache Hive through HiveServer2
     icon: hive
     category: data-warehouse
@@ -501,7 +501,7 @@ plugins:
 
   - namespace: marmotdata
     name: kafka
-    display_name: Kafka
+    display_name: Apache Kafka
     description: Discover Kafka topics from Kafka clusters
     icon: kafka
     category: streaming
@@ -518,7 +518,7 @@ plugins:
 
   - namespace: marmotdata
     name: kafkaconnect
-    display_name: Kafka Connect
+    display_name: Apache Kafka Connect
     description: Discover connectors, tasks and topics from Kafka Connect clusters with lineage to the systems they move data between
     icon: kafka
     category: orchestration
@@ -532,7 +532,7 @@ plugins:
 
   - namespace: marmotdata
     name: kinesis
-    display_name: Kinesis
+    display_name: AWS Kinesis
     description: Discover Kinesis Data Streams from AWS accounts
     icon: kinesis
     category: messaging
@@ -639,7 +639,7 @@ plugins:
 
   - namespace: marmotdata
     name: mssql
-    display_name: SQL Server
+    display_name: Microsoft SQL Server
     description: Discover databases, tables, views and routines from Microsoft SQL Server instances
     icon: sql-server
     category: database
@@ -687,7 +687,7 @@ plugins:
 
   - namespace: marmotdata
     name: nifi
-    display_name: NiFi
+    display_name: Apache NiFi
     description: Discover process groups, processors and data flow lineage from Apache NiFi
     icon: nifi
     category: orchestration
@@ -750,7 +750,7 @@ plugins:
 
   - namespace: marmotdata
     name: oracle
-    display_name: Oracle
+    display_name: Oracle Database
     description: Discover schemas, tables, views, materialized views and stored procedures from Oracle databases
     icon: oracle
     category: database
@@ -764,7 +764,7 @@ plugins:
 
   - namespace: marmotdata
     name: pinot
-    display_name: Pinot
+    display_name: Apache Pinot
     description: Discover tables, schemas and stream lineage from Apache Pinot clusters
     icon: pinot
     category: database
@@ -916,7 +916,7 @@ plugins:
 
   - namespace: marmotdata
     name: sagemaker
-    display_name: SageMaker
+    display_name: AWS SageMaker
     description: Discover models, endpoints, feature groups and training jobs from Amazon SageMaker
     icon: sagemaker
     category: ml
@@ -1021,7 +1021,7 @@ plugins:
 
   - namespace: marmotdata
     name: superset
-    display_name: Superset
+    display_name: Apache Superset
     description: Discover dashboards, charts, datasets and database connections from Apache Superset
     icon: superset
     category: dashboard
@@ -1079,7 +1079,7 @@ plugins:
 
   - namespace: marmotdata
     name: vertexai
-    display_name: Vertex AI
+    display_name: Google Vertex AI
     description: Discover models, endpoints, datasets, feature groups and pipeline jobs from Google Vertex AI
     icon: vertex-ai
     category: ml
