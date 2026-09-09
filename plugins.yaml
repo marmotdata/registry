@@ -38,6 +38,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:a911ad6b1236a18b4766e786ec316278fa55d554146705fd62d4127f47c5f06d
+      - version: 0.1.1
+        digest: sha256:29659889eb7469bd5a7c5154040cdbc06f933396a97d61c5cb168d227a35d91a
 
   - namespace: marmotdata
     name: asyncapi
@@ -69,6 +71,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:1bec493078bf6890140c9cc7dc26700c3530ab20c54a7544e87e167e0dbff763
+      - version: 0.1.1
+        digest: sha256:0699cae7d276077e63dadf971b4f19251e62f30de2264e2bcbe677213f2b9ec2
 
   - namespace: marmotdata
     name: azureblob
@@ -117,6 +121,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:2f3898dc9083b465dc2d7387a1219afab0e1cd95f01a71f91f7599a4d1fb0b48
+      - version: 0.1.1
+        digest: sha256:6582c94953303f7b9c785bc8a17c5208fce90f4973c2c71cfea83b3c99518345
 
   - namespace: marmotdata
     name: cassandra
@@ -131,6 +137,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:b0085294dbce95eb9e3d95e695871ba29695b31c712c5bc3232dae856dda67f7
+      - version: 0.1.1
+        digest: sha256:43a3599b617960f2bc4c68a2e7c736a6a660969069a2e1ea8efd0081abf70509
 
   - namespace: marmotdata
     name: clickhouse
@@ -162,6 +170,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:032f06ab5df1e6e8e6d0d5cc27b72ae0a07afc395acc19e8023b721043cf4de9
+      - version: 0.1.1
+        digest: sha256:c8a91f9feabff2ed629409421d60f103b9d896850400531b28b59222c4be571e
 
   - namespace: marmotdata
     name: cockroachdb
@@ -176,6 +186,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:e408fa332e94663a786e45e152be775daf221c8e7202d666eb72fff0a8acfbd0
+      - version: 0.1.1
+        digest: sha256:8dc44460688f17cb5beecf8dec2e688abd5a8d22fd33e1b40f40c9571453b6c6
 
   - namespace: marmotdata
     name: confluent
@@ -205,6 +217,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:5c07bb43a2b9fbbef8c55ac9f9e3337111ac650fe0cafb080481661144cdd73a
+      - version: 0.1.1
+        digest: sha256:9e98afb189af409fe3626b21b89b8a26ac28f3bc3b9633b1d59b093896084aa0
 
   - namespace: marmotdata
     name: dagster
@@ -219,6 +233,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:d8838010a1637727e28bc7602609fabf3c79f1ec3fa39a504b1584832fdc9f0e
+      - version: 0.1.1
+        digest: sha256:7a75a91ca84c96b2711b22204d79e80a0128cc7d7f307d22ccc68cd1c1eb87d2
 
   - namespace: marmotdata
     name: dbt
@@ -267,6 +283,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:a1dee565093dc46dbf6b27e68f8bd053a550c5080770ba4eac328da03c3433e7
+      - version: 0.1.1
+        digest: sha256:53d28b24b7f0f5eb87e1eabd66c10b57da27ff0db77f91aa18b644def472ba3b
 
   - namespace: marmotdata
     name: duckdb
@@ -347,6 +365,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:4262bd7ee7d3242c5b56de46934d633ea09ba60c407fb6299593561a27f46082
+      - version: 0.1.1
+        digest: sha256:b697f44688f6448e3f4c4ede11269c8326da07cba0d3851aa8ddc229003eb96f
 
   - namespace: marmotdata
     name: firehose
@@ -361,6 +381,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:82c45bb45e5a3230ca5b7fe9b6a190f5ba3f5c552ef3141736cf0d2b0956bdb8
+      - version: 0.1.1
+        digest: sha256:1abafe5ad77ccfdcd40ebbdb90dbc46b6e0ec352534bc70b6436d07200ade6e7
 
   - namespace: marmotdata
     name: flink
@@ -375,6 +397,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:09067901a5f4bfb6dd9eb7ec18c9b66a0f934827ca1a583866f6cd240b7dda81
+      - version: 0.1.1
+        digest: sha256:6bc5aaf2e320d5a74bd9374282700f9984995e8016b84c1f0dbdb4020b61391d
 
   - namespace: marmotdata
     name: gcs
@@ -438,6 +462,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:7f9faf89e1f83ec9118f2f8e4e687e6a9dbff9feaf9699a318ef6841320026a9
+      - version: 0.1.1
+        digest: sha256:4576d05ee2da4a8638725388a15f0d5676ad447773c0effe5eb476427325d579
 
   - namespace: marmotdata
     name: googledrive
@@ -467,6 +493,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:83e20f3a38cc4d62e6473b53f77b3116867ca7693d0a8e58e2fe47a30621c2a7
+      - version: 0.1.1
+        digest: sha256:6758650a14aa0780d334dd327ec0e2282463507b9b9da235a8d7289edbbc244b
 
   - namespace: marmotdata
     name: hive
@@ -481,6 +509,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:cf9359abb0cbaa7a731fceba99399ee3e85d5e36ecb0bbc5df3c25d554c979b2
+      - version: 0.1.1
+        digest: sha256:d5788531276527248cd6aa95b062aab5edd4edec7f06d40c5c29d864f3862c6c
 
   - namespace: marmotdata
     name: iceberg
@@ -529,6 +559,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:95e5cbb490fbdbfefc63bd476cc115206374e48c4c3089c9448c00d0b7fad3cc
+      - version: 0.1.1
+        digest: sha256:0644fcfa1a794b847b33f362b13076139caec45db540de12b01f265df4f0d4a5
 
   - namespace: marmotdata
     name: kinesis
@@ -543,6 +575,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:57ea839ad665315a194567ad5af8c6c5f651ce0b504a5179f1f28f5ca33f1e27
+      - version: 0.1.1
+        digest: sha256:4a99367b5adbec39d8152b0a94893515fe1ad4ad724a3c41eb88332af662502a
 
   - namespace: marmotdata
     name: kubernetes
@@ -591,6 +625,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:da65ecd0efe1d716733d78e9245dce870117aaf0f40311249e422ee773f56d01
+      - version: 0.1.1
+        digest: sha256:efae114c68daeb7e3ec5ca8f27f07acc0c77fb15815227bc3b9ac1c848c870a9
 
   - namespace: marmotdata
     name: metabase
@@ -605,6 +641,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:833edd1039ee599786ab0b1106c7f8071617d5d475f5a22a60448ca9700127e8
+      - version: 0.1.1
+        digest: sha256:cc8a2be83d1e042d50dba48a08c943fbe76ea63b62373e236b2a803771b9f9ac
 
   - namespace: marmotdata
     name: mlflow
@@ -619,6 +657,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:65698c6f583bc79b1eb93b704d81180cb6759d9f282d65c0736c67ca01e612d0
+      - version: 0.1.1
+        digest: sha256:53f17907ede6b6ff00f6646b9ebdcd37af4f414189339fc56043a59327df045d
 
   - namespace: marmotdata
     name: mongodb
@@ -650,6 +690,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:5c0e0aab7ce9a4da91f71b4936d785fedcb39d57e41eadfefe72533875c5f3ac
+      - version: 0.1.1
+        digest: sha256:d96d349c4fde9278621dba7126bf9c06b1a77aefa205dcd65bd4e3550ce9ecc4
 
   - namespace: marmotdata
     name: mysql
@@ -698,6 +740,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:a7426e783f21148641ff40add2023084300e410a1a78a19c97f7b6a0863b1cd4
+      - version: 0.1.1
+        digest: sha256:989c00032091bd35a8cbedd97c1b16046faa1618d2e1870acb521ee5c11c2958
 
   - namespace: marmotdata
     name: openapi
@@ -761,6 +805,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:05b8c80f15b14899863b3910daf434bb3632255ffa83c67ae43184da2b60b0cd
+      - version: 0.1.1
+        digest: sha256:1339051c79339ab9c2a281321457c76f7ad8d35bb126e3a8e0f4f73e063a4170
 
   - namespace: marmotdata
     name: pinot
@@ -775,6 +821,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:ea790668e83013124878d3ed663e8438080b0edb13063823f81210a889bf8e41
+      - version: 0.1.1
+        digest: sha256:f39ff14077c2fa88a617b80819470fe38e60fa9052161f5dd1871dcef57f2fa1
 
   - namespace: marmotdata
     name: postgresql
@@ -808,6 +856,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:aa2fe51aeea0962e74a045c1a6b951df1c235f783d4c7b10f896afddba432abe
+      - version: 0.1.1
+        digest: sha256:a9c1844df5a046f894dae47daae89787314a2d157ad78ce64e4ea1771e9e7cf5
 
   - namespace: marmotdata
     name: presto
@@ -822,6 +872,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:9f529b35fd5dd1ff9bc839bf963ff6a43789c9ab134089ea449d373022b3e05b
+      - version: 0.1.1
+        digest: sha256:95f93652e452edecdd44adc6a63d843b8250812aeb6d0154be1bd9cb8a8511c1
 
   - namespace: marmotdata
     name: pubsub
@@ -836,6 +888,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:605062beab41bd49ffb7b7723ff4ee94274e81a9c77d12e2331768a7c5bc522c
+      - version: 0.1.1
+        digest: sha256:af755245802e7d16bbc74147baa98464f204bdb603f3c1487ac97cb47900ad87
 
   - namespace: marmotdata
     name: questdb
@@ -850,6 +904,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:33b17b3b07d7c9c5f5cf3ef0362bb7b9d6bc52c0c3440b1af8d79c982d70783c
+      - version: 0.1.1
+        digest: sha256:e756ad74067b41e03befaed8aaea14d6b3ddfc00e331b83ab613a7a77bfd8ea6
 
   - namespace: marmotdata
     name: redash
@@ -864,6 +920,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:58856ceddd378163e5ada18d4add5c2702c1a56c4b8466a2ed63b9714acea9d0
+      - version: 0.1.1
+        digest: sha256:cac9b79210e7b8c674d8f63aa9ac2b2db4640aeaf801e0844582903e226a07ee
 
   - namespace: marmotdata
     name: redis
@@ -927,6 +985,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:5789c2062d9eb34919dc1b8984d7319238f0640498655fd3b991436cb65aea86
+      - version: 0.1.1
+        digest: sha256:d56cc8bf81c39c4b79a390ccbc1a9deb696a25f9c2422475b7e5a9ae4324d8cc
 
   - namespace: marmotdata
     name: sftp
@@ -941,6 +1001,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:95812358e51cbdc37157d9ab7ea7e72c278923bde8af95e9fecfe8fbb462d133
+      - version: 0.1.1
+        digest: sha256:4ecb85ec2bab9f43d477c9186eb9908650e1c65d20a7f4cb77d4bf7e91b25db9
 
   - namespace: marmotdata
     name: sns
@@ -972,6 +1034,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:f3f09cbaedbbabb5a504880d1ea352e0e95ddbfd5db700b4278aa8a28d2df408
+      - version: 0.1.1
+        digest: sha256:23243ec930e1832702aba0362876e68b0db22c12d38280dca3dc0b82319c1658
 
   - namespace: marmotdata
     name: sqlite
@@ -1018,6 +1082,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:46b65f93c32a9cb68ff29ec02329fd23ff3bf67dc255cb021a35af1dcc54b850
+      - version: 0.1.1
+        digest: sha256:9ed2c2f83e4e394bd8ad68fdbfb62aca699ece15abfd37a910907541597ea372
 
   - namespace: marmotdata
     name: superset
@@ -1032,6 +1098,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:2bcd1f16a4bf7e9be9738ab82811ff90ee66bf330580b04f18d2f80c7ab72610
+      - version: 0.1.1
+        digest: sha256:c55a72644a4be5e5699f5c8d71882787ae64dc3cd6ec1dad5bf2949cdc6c961b
 
   - namespace: marmotdata
     name: timescale
@@ -1046,6 +1114,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:8b602b48088786e2275e6a77a02de9053f6d54be4b8597bd0b413486aea0ef49
+      - version: 0.1.1
+        digest: sha256:cf1333860b835c559010490d31b8d8d2569805f7efa8faec13806651a7e76b01
 
   - namespace: marmotdata
     name: trino
@@ -1076,6 +1146,8 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:8a1fa0df8b745792f611ae66c70731a5de1ce368fc4d608055c5e8ef4230e238
+      - version: 0.1.1
+        digest: sha256:4df6c256a6c7aaa7dd063265ea766cb680352e2d3945a718a8a87cd22f30f462
 
   - namespace: marmotdata
     name: vertexai
@@ -1090,3 +1162,5 @@ plugins:
     versions:
       - version: 0.1.0
         digest: sha256:b77a90adb81ac8786eae6320469b856ab3e870ff5c7ff5c117dd90caa70cb4d5
+      - version: 0.1.1
+        digest: sha256:a16c48bf29198dd2dd0bdeb2e699df684fb875f7a9a75b503002795e86ac7ae2
