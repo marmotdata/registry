@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
+	import { SITE_URL } from '$lib/site';
 	import { goto } from '$app/navigation';
 	import {
 		ChevronRight,
@@ -150,6 +151,9 @@
 <svelte:head>
 	<title>{plugin.display_name}{isLatest ? '' : ` v${version.version}`} · Marmot Plugin Registry</title>
 	<meta name="description" content={plugin.description} />
+	<meta property="og:title" content="{plugin.display_name} · Marmot Plugin Registry" />
+	<meta property="og:description" content={plugin.description} />
+	<meta property="og:url" content="{SITE_URL}/{plugin.namespace}/{plugin.name}" />
 </svelte:head>
 
 <!-- Breadcrumb ------------------------------------------------------------- -->

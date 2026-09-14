@@ -3,6 +3,7 @@
 	import { base } from '$app/paths';
 	import Header from '$lib/components/Header.svelte';
 	import FloatingThemeToggle from '$lib/components/FloatingThemeToggle.svelte';
+	import { SITE_NAME, SOCIAL_IMAGE } from '$lib/site';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -11,6 +12,16 @@
 
 	const year = new Date().getFullYear();
 </script>
+
+<svelte:head>
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content={SITE_NAME} />
+	<meta property="og:image" content={SOCIAL_IMAGE} />
+	<meta property="og:image:width" content="2400" />
+	<meta property="og:image:height" content="1260" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content={SOCIAL_IMAGE} />
+</svelte:head>
 
 <div class="flex min-h-screen flex-col">
 	<Header logoLight="{base}/img/marmot-text.svg" logoDark="{base}/img/marmot-text-light.svg" />

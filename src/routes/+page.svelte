@@ -4,6 +4,7 @@
 	import PluginCard from '$lib/components/PluginCard.svelte';
 	import SecretStoreCard from '$lib/components/SecretStoreCard.svelte';
 	import { CATEGORIES, categoryInfo, categoryOf, sortFeatures } from '$lib/taxonomy';
+	import { SITE_URL } from '$lib/site';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -162,6 +163,9 @@
 
 <svelte:head>
 	<title>Marmot Plugin Registry</title>
+	<meta property="og:title" content="Marmot Plugin Registry" />
+	<meta property="og:description" content="A registry of plugins for Marmot — the open-source data catalog." />
+	<meta property="og:url" content={SITE_URL} />
 </svelte:head>
 
 <!-- Hero ------------------------------------------------------------------ -->
