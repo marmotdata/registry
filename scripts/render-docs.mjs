@@ -159,5 +159,11 @@ function sanitizeMdx(md) {
 	// Collapse the extra blank lines the strips leave behind.
 	out = out.replace(/\n{3,}/g, '\n\n');
 
+	// Older READMEs open with the plugin's own title and a raw-HTML badge block
+	// (status, "Creates:" features). The registry page header already shows
+	// all of that, so drop both when they lead the document.
+	out = out.replace(/^\s*#\s+[^\n]+\n+/, '');
+	out = out.replace(/^<div class="flex flex-col[\s\S]*?\n<\/div>\n\n/, '');
+
 	return out;
 }

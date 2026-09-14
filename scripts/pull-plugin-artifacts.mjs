@@ -1,9 +1,13 @@
-// Pulls each plugin's info referrer from OCI and writes:
-//   static/metadata/{namespace}/{name}.json    (metadata + asset_schemas)
-//   build/plugin-docs/{namespace}/{name}.md    (README, later rendered to HTML)
+// Pulls the info referrer of every published version of every plugin and
+// writes, per version:
+//   static/metadata/{namespace}/{name}@{version}.json  (metadata + asset_schemas)
+//   build/plugin-docs/{namespace}/{name}@{version}.md  (README, rendered later)
+// plus an unsuffixed copy of the latest version at {name}.json / {name}.md.
 //
-// Missing referrers are logged and skipped so partially-released
-// registries still build. Re-release with `marmot plugin push` to fix.
+// The referrer is attached by the release-plugin workflow in marmotdata/marmot
+// (`oras attach` on the version's index digest). Versions pushed before that
+// step existed have none; they are logged and skipped, and their pages render
+// without docs.
 //
 // Usage: pnpm pull-plugin-artifacts [-- --only=name1,name2]
 
@@ -95,7 +99,7 @@ async function pullInfoBundle(repoRef, subjectDigest) {
 	const slash = repoRef.indexOf('/');
 	const client = new OciClient(repoRef.slice(0, slash), repoRef.slice(slash + 1));
 	const infoDigest = await client.findInfoReferrer(subjectDigest);
-	if (!infoDigest) throw new Error('no info referrer (re-release with `marmot plugin push`)');
+	if (!infoDigest) throw new Error('no info referrer (published before docs were attached)');
 	const manifest = await client.getManifest(infoDigest);
 	const bundle = {};
 	for (const layer of manifest.layers ?? []) {
@@ -104,7 +108,9 @@ async function pullInfoBundle(repoRef, subjectDigest) {
 	return bundle;
 }
 
-function writeBundle(plugin, bundle) {
+// `names` is every basename to write under: [`kafka@0.1.2`] for an old
+// version, [`kafka@0.1.2`, `kafka`] for the latest.
+function writeBundle(plugin, bundle, names) {
 	if (bundle[METADATA_TYPE]) {
 		const meta = JSON.parse(bundle[METADATA_TYPE].toString('utf8'));
 		if (bundle[SCHEMAS_TYPE]) {
@@ -112,12 +118,13 @@ function writeBundle(plugin, bundle) {
 		}
 		const dir = join(metaOut, plugin.namespace);
 		mkdirSync(dir, { recursive: true });
-		writeFileSync(join(dir, `${plugin.name}.json`), JSON.stringify(meta, null, 2) + '\n');
+		const json = JSON.stringify(meta, null, 2) + '\n';
+		for (const n of names) writeFileSync(join(dir, `${n}.json`), json);
 	}
 	if (bundle[README_TYPE]) {
 		const dir = join(docsOut, plugin.namespace);
 		mkdirSync(dir, { recursive: true });
-		writeFileSync(join(dir, `${plugin.name}.md`), bundle[README_TYPE]);
+		for (const n of names) writeFileSync(join(dir, `${n}.md`), bundle[README_TYPE]);
 	}
 }
 
@@ -148,24 +155,48 @@ if (!only) {
 mkdirSync(metaOut, { recursive: true });
 mkdirSync(docsOut, { recursive: true });
 
-const skipped = [];
-let ok = 0;
+// One job per (plugin, version). GHCR tolerates a handful in flight.
+const jobs = [];
 for (const plugin of plugins) {
 	const label = `${plugin.namespace}/${plugin.name}`;
-	const latest = plugin.versions?.at(-1);
-	if (!latest?.digest) {
-		skipped.push(`${label} — no version/digest in plugins.yaml`);
+	const versions = (plugin.versions ?? []).filter((v) => v?.digest);
+	if (versions.length === 0) {
+		jobs.push({ label, skip: 'no version/digest in plugins.yaml' });
 		continue;
 	}
-	try {
-		const bundle = await pullInfoBundle(resolveRepoRef(plugin, latest, index.default_registry), latest.digest);
-		writeBundle(plugin, bundle);
-		console.log(`  ok    ${label}`);
-		ok++;
-	} catch (err) {
-		skipped.push(`${label} — ${err.message}`);
+	const latest = versions.at(-1);
+	for (const version of versions) {
+		const names = [`${plugin.name}@${version.version}`];
+		if (version === latest) names.push(plugin.name);
+		jobs.push({ label: `${label}@${version.version}`, plugin, version, names });
 	}
 }
 
+const CONCURRENCY = 6;
+const skipped = [];
+let ok = 0;
+let next = 0;
+
+async function worker() {
+	while (next < jobs.length) {
+		const job = jobs[next++];
+		if (job.skip) {
+			skipped.push(`${job.label} — ${job.skip}`);
+			continue;
+		}
+		try {
+			const repo = resolveRepoRef(job.plugin, job.version, index.default_registry);
+			const bundle = await pullInfoBundle(repo, job.version.digest);
+			writeBundle(job.plugin, bundle, job.names);
+			console.log(`  ok    ${job.label}`);
+			ok++;
+		} catch (err) {
+			skipped.push(`${job.label} — ${err.message}`);
+		}
+	}
+}
+
+await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+
 console.log(`\n${ok} pulled, ${skipped.length} skipped`);
-for (const s of skipped) console.warn(`  skip  ${s}`);
+for (const s of skipped.sort()) console.warn(`  skip  ${s}`);

@@ -19,6 +19,21 @@ export interface Plugin {
 	versions: PluginVersion[];
 }
 
+export interface SecretStore {
+	id: string;
+	display_name: string;
+	description: string;
+	icon: string;
+	status: string | null;
+	federation: string | null;
+}
+
+export interface SecretStoreIndex {
+	schema_version: number;
+	secret_store_count: number;
+	secret_stores: SecretStore[];
+}
+
 export interface PluginIndex {
 	schema_version: number;
 	plugin_count: number;

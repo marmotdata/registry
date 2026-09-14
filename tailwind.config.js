@@ -1,12 +1,48 @@
 import typography from '@tailwindcss/typography';
 
+/** rgb-triplet CSS variable → Tailwind colour with alpha support */
+const v = (name) => `rgb(var(${name}) / <alpha-value>)`;
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	darkMode: 'class',
 	theme: {
 		extend: {
+			// Four working sizes. xs for metadata and tags, sm for UI and body copy in
+			// dense layouts, base for reading, lg for lead paragraphs. Nothing under 13px.
+			fontSize: {
+				xs: ['0.8125rem', { lineHeight: '1.25rem' }],
+				sm: ['0.9375rem', { lineHeight: '1.5rem' }],
+				base: ['1rem', { lineHeight: '1.625rem' }],
+				lg: ['1.125rem', { lineHeight: '1.75rem' }],
+				xl: ['1.25rem', { lineHeight: '1.75rem' }],
+				'2xl': ['1.5rem', { lineHeight: '2rem' }],
+				'3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+				'4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+				'5xl': ['3rem', { lineHeight: '1.08' }],
+				code: ['0.875rem', { lineHeight: '1.65' }]
+			},
+			fontFamily: {
+				sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+				mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace']
+			},
 			colors: {
+				// Semantic tokens — defined per theme in app.css.
+				page: v('--c-page'),
+				surface: v('--c-surface'),
+				'surface-2': v('--c-surface-2'),
+				'surface-3': v('--c-surface-3'),
+				line: v('--c-line'),
+				'line-strong': v('--c-line-strong'),
+				ink: v('--c-ink'),
+				'ink-muted': v('--c-ink-muted'),
+				'ink-subtle': v('--c-ink-subtle'),
+				accent: v('--c-accent'),
+				'accent-strong': v('--c-accent-strong'),
+				'accent-soft': v('--c-accent-soft'),
+				'accent-ink': v('--c-accent-ink'),
+
 				gray: {
 					50: '#F9F9F9',
 					100: '#ECECEC',
@@ -64,8 +100,8 @@ export default {
 					500: '#ff8a66',
 					600: '#f5704a',
 					700: '#d25a30',
-					800: '#c74624',
-					900: '#9d361a'
+					800: '#b34822',
+					900: '#8d3718'
 				},
 				'earthy-blue': {
 					50: '#f9fafb',
@@ -79,6 +115,27 @@ export default {
 					800: '#4a656f',
 					900: '#355159'
 				}
+			},
+			boxShadow: {
+				card: '0 1px 2px rgb(20 16 12 / 0.04), 0 1px 3px rgb(20 16 12 / 0.03)',
+				'card-hover':
+					'0 1px 2px rgb(20 16 12 / 0.04), 0 8px 24px -8px rgb(210 90 48 / 0.18), 0 12px 32px -16px rgb(20 16 12 / 0.16)',
+				pop: '0 8px 30px -8px rgb(20 16 12 / 0.25)'
+			},
+			borderRadius: {
+				'2.5xl': '1.25rem'
+			},
+			letterSpacing: {
+				tightest: '-0.03em'
+			},
+			keyframes: {
+				'fade-up': {
+					'0%': { opacity: '0', transform: 'translateY(6px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				}
+			},
+			animation: {
+				'fade-up': 'fade-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both'
 			}
 		}
 	},

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Box } from 'lucide-svelte';
 	import type { AssetSchema } from '$lib/types';
+	import type { Tone } from '$lib/taxonomy';
+	import Tag from './Tag.svelte';
 
 	interface Props {
 		schema: AssetSchema;
@@ -8,74 +10,45 @@
 
 	let { schema }: Props = $props();
 
-	const TYPE_STYLES: Record<string, string> = {
-		string:
-			'bg-earthy-blue-50 dark:bg-earthy-blue-900/30 text-earthy-blue-800 dark:text-earthy-blue-200 border-earthy-blue-200 dark:border-earthy-blue-800',
-		int: 'bg-earthy-green-50 dark:bg-earthy-green-900/30 text-earthy-green-800 dark:text-earthy-green-200 border-earthy-green-200 dark:border-earthy-green-800',
-		float:
-			'bg-earthy-green-50 dark:bg-earthy-green-900/30 text-earthy-green-800 dark:text-earthy-green-200 border-earthy-green-200 dark:border-earthy-green-800',
-		bool: 'bg-earthy-yellow-50 dark:bg-earthy-yellow-900/30 text-earthy-yellow-800 dark:text-earthy-yellow-200 border-earthy-yellow-300 dark:border-earthy-yellow-700'
+	const TYPE_TONE: Record<string, Tone> = {
+		string: 'blue',
+		int: 'green',
+		float: 'green',
+		bool: 'amber'
 	};
 
-	function typeStyle(t: string): string {
-		const base = t.replace(/\[\]$/, '');
-		return (
-			TYPE_STYLES[base] ??
-			'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700'
-		);
+	function typeTone(t: string): Tone {
+		return TYPE_TONE[t.replace(/\[\]$/, '')] ?? 'neutral';
 	}
 </script>
 
-<section
-	class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
->
-	<header
-		class="flex items-center justify-between gap-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-3 rounded-t-xl"
-	>
-		<div class="flex items-center gap-2 min-w-0">
-			<Box
-				size={16}
-				class="flex-shrink-0 text-earthy-terracotta-700 dark:text-earthy-terracotta-400"
-			/>
-			<h3 class="font-semibold text-gray-900 dark:text-white truncate">
-				{schema.display_name}
-			</h3>
-			<code
-				class="hidden sm:inline font-mono text-xs text-gray-500 dark:text-gray-400 truncate"
-			>
-				{schema.struct_name}
-			</code>
+<section class="card overflow-hidden">
+	<header class="flex items-center justify-between gap-3 border-b border-line bg-surface-2 px-4 py-3">
+		<div class="flex min-w-0 items-center gap-2.5">
+			<span class="logo-well h-7 w-7 rounded-lg">
+				<Box size={14} class="text-accent" />
+			</span>
+			<h3 class="m-0 truncate text-base font-semibold text-ink">{schema.display_name}</h3>
+			<code class="hidden truncate font-mono text-xs text-ink-subtle sm:inline">{schema.struct_name}</code>
 		</div>
-		<span class="flex-shrink-0 text-xs text-gray-500 dark:text-gray-400">
+		<span class="flex-shrink-0 text-sm text-ink-subtle">
 			{schema.fields.length}
 			{schema.fields.length === 1 ? 'field' : 'fields'}
 		</span>
 	</header>
 
 	{#if schema.description}
-		<p class="px-4 pt-3 text-sm text-gray-600 dark:text-gray-400">
-			{schema.description}
-		</p>
+		<p class="m-0 border-b border-line px-4 py-3 text-sm text-ink-muted">{schema.description}</p>
 	{/if}
 
-	<div class="divide-y divide-gray-100 dark:divide-gray-800">
+	<div class="divide-y divide-line">
 		{#each schema.fields as field (field.name)}
-			<div class="px-4 py-2.5 flex items-start gap-3 flex-wrap sm:flex-nowrap">
-				<div class="flex items-center gap-2 min-w-0 sm:w-56 sm:flex-shrink-0">
-					<code
-						class="font-mono text-sm text-gray-900 dark:text-white break-all"
-					>
-						{field.name}
-					</code>
-					<span
-						class="flex-shrink-0 rounded border px-1.5 py-0.5 font-mono text-[0.7rem] {typeStyle(
-							field.type
-						)}"
-					>
-						{field.type}
-					</span>
+			<div class="flex flex-wrap items-start gap-x-4 gap-y-1 px-4 py-3 sm:flex-nowrap">
+				<div class="flex min-w-0 items-center gap-2 sm:w-60 sm:flex-shrink-0">
+					<code class="break-all font-mono text-sm text-ink">{field.name}</code>
+					<Tag tone={typeTone(field.type)} mono>{field.type}</Tag>
 				</div>
-				<p class="text-sm text-gray-600 dark:text-gray-400 min-w-0 flex-1">
+				<p class="m-0 min-w-0 flex-1 text-sm text-ink-muted">
 					{field.description || '—'}
 				</p>
 			</div>

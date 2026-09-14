@@ -1,5 +1,7 @@
+<!-- Small, quiet theme switch pinned bottom-right. Renders only after mount
+     so the icon matches the theme applied by the inline script in app.html. -->
 <script lang="ts">
-	import Icon from '@iconify/svelte';
+	import { Sun, Moon } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
 	let isDark = $state(false);
@@ -10,30 +12,27 @@
 		mounted = true;
 	});
 
-	function toggleColorMode(e: Event) {
-		e.preventDefault();
+	function toggle() {
 		isDark = !isDark;
 		document.documentElement.classList.toggle('dark', isDark);
-		localStorage.setItem('theme', isDark ? 'dark' : 'light');
+		try {
+			localStorage.setItem('theme', isDark ? 'dark' : 'light');
+		} catch {}
 	}
 </script>
 
 {#if mounted}
-	<!-- svelte-ignore a11y_invalid_attribute -->
-	<a
-		href="#"
-		onclick={toggleColorMode}
-		class="fixed bottom-8 right-8 z-50 p-4 rounded-2xl shadow-xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 backdrop-blur-sm inline-flex items-center justify-center"
-		aria-label="Toggle theme"
-		title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+	<button
+		type="button"
+		onclick={toggle}
+		class="fixed bottom-5 right-5 z-50 inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface/90 text-ink-muted shadow-pop backdrop-blur transition-all hover:-translate-y-0.5 hover:text-accent active:translate-y-0"
+		aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+		title={isDark ? 'Light theme' : 'Dark theme'}
 	>
 		{#if isDark}
-			<Icon icon="mdi:white-balance-sunny" class="w-7 h-7 text-yellow-400 drop-shadow-md" />
+			<Sun size={17} />
 		{:else}
-			<Icon
-				icon="mdi:moon-waning-crescent"
-				class="w-7 h-7 text-indigo-600 dark:text-indigo-400 drop-shadow-md"
-			/>
+			<Moon size={17} />
 		{/if}
-	</a>
+	</button>
 {/if}

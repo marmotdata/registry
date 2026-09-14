@@ -100,7 +100,13 @@ const PLUGIN_ICONS: Record<string, IconSpec> = {
 	// clock mark, so the current badge lives locally.
 	timescale: { local: 'timescale', ext: 'svg', hasDark: true },
 	trino: { iconify: 'simple-icons:trino' },
-	'vertex-ai': { iconify: 'devicon:googlecloud' }
+	'vertex-ai': { iconify: 'devicon:googlecloud' },
+
+	// Secret stores (secret-stores.yaml). Vendor marks where the product has none.
+	'aws-secrets-manager': { iconify: 'logos:aws-secrets-manager' },
+	'azure-key-vault': { iconify: 'logos:azure-icon' },
+	'google-secret-manager': { iconify: 'devicon:googlecloud' },
+	vault: { iconify: 'logos:vault-icon' }
 };
 
 export function iconSpec(name: string): IconSpec {

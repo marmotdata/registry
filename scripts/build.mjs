@@ -9,6 +9,8 @@ import { load } from 'js-yaml';
 const here = dirname(fileURLToPath(import.meta.url));
 const yamlPath = resolve(here, '..', 'plugins.yaml');
 const jsonPath = resolve(here, '..', 'static', 'plugins.json');
+const storesYamlPath = resolve(here, '..', 'secret-stores.yaml');
+const storesJsonPath = resolve(here, '..', 'static', 'secret-stores.json');
 
 const src = load(readFileSync(yamlPath, 'utf8'));
 
@@ -67,3 +69,29 @@ const output = {
 
 writeFileSync(jsonPath, JSON.stringify(output, null, 2) + '\n');
 console.log(`Wrote ${plugins.length} plugins to ${jsonPath}`);
+
+// Secret stores: a flat list, no versions, no OCI. See secret-stores.yaml.
+const storesSrc = load(readFileSync(storesYamlPath, 'utf8'));
+if (!storesSrc || !Array.isArray(storesSrc.secret_stores)) {
+	throw new Error('secret-stores.yaml is missing a `secret_stores` array');
+}
+const secretStores = storesSrc.secret_stores
+	.map((s) => ({
+		id: s.id,
+		display_name: s.display_name ?? s.id,
+		description: s.description ?? '',
+		icon: s.icon ?? s.id,
+		status: s.status ?? null,
+		federation: s.federation ?? null
+	}))
+	.sort((a, b) => a.display_name.localeCompare(b.display_name));
+
+writeFileSync(
+	storesJsonPath,
+	JSON.stringify(
+		{ schema_version: storesSrc.schema_version ?? 1, secret_store_count: secretStores.length, secret_stores: secretStores },
+		null,
+		2
+	) + '\n'
+);
+console.log(`Wrote ${secretStores.length} secret stores to ${storesJsonPath}`);
