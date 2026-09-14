@@ -47,7 +47,7 @@
 		{plugin.description}
 	</p>
 
-	<div class="mt-auto flex items-end justify-between gap-3 pt-4">
+	<div class="flex items-end justify-between gap-3 pt-4">
 		<PluginTags {plugin} showStatus={false} omit={['Assets']} />
 		<ArrowUpRight
 			size={16}

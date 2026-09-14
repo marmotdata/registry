@@ -14,12 +14,22 @@
 //
 // hasDark swaps in static/img/dark-<name>.<ext> under the dark theme, for marks
 // that are near-invisible on one background.
+//
+// color tints monochrome marks (simple-icons ships silhouettes) with the
+// brand's own hex from simple-icons' data; darkColor overrides it on the dark
+// theme for brands whose colour is near-black.
+//
+// scale enlarges a mark whose SVG carries a lot of empty padding, so it sits
+// at the same optical size as its neighbours.
 
 export interface IconSpec {
 	iconify?: string;
 	local?: string;
 	ext?: 'svg' | 'png';
 	hasDark?: boolean;
+	color?: string;
+	darkColor?: string;
+	scale?: number;
 }
 
 const PLUGIN_ICONS: Record<string, IconSpec> = {
@@ -31,17 +41,19 @@ const PLUGIN_ICONS: Record<string, IconSpec> = {
 	azureblob: { iconify: 'logos:azure-icon' },
 	bigquery: { iconify: 'devicon:googlecloud' },
 	bigtable: { iconify: 'devicon:googlecloud' },
-	cassandra: { iconify: 'devicon:cassandra' },
+	// devicon's eye sits in a heavily padded square and renders tiny; this is
+	// the same artwork with the viewBox cropped to the mark.
+	cassandra: { local: 'cassandra', ext: 'svg' },
 	clickhouse: { iconify: 'devicon:clickhouse' },
 	'cloud-run': { iconify: 'logos:google-cloud-run' },
-	cockroachdb: { iconify: 'simple-icons:cockroachlabs' },
+	cockroachdb: { iconify: 'simple-icons:cockroachlabs', color: '#6933FF', darkColor: '#9B7BFF' },
 	confluent: { local: 'confluent', ext: 'png' },
 	couchbase: { iconify: 'logos:couchbase' },
 	dagster: { local: 'dagster', ext: 'png' },
 	databricks: { iconify: 'logos:databricks-icon' },
 	dbt: { iconify: 'logos:dbt-icon' },
 	deltalake: { local: 'deltalake', ext: 'svg' },
-	doris: { iconify: 'simple-icons:apachedoris' },
+	doris: { iconify: 'simple-icons:apachedoris', color: '#444FD9', darkColor: '#7C85FF' },
 	duckdb: { iconify: 'devicon:duckdb' },
 	dynamodb: { iconify: 'logos:aws-dynamodb' },
 	eks: { iconify: 'logos:aws-eks' },
@@ -57,7 +69,7 @@ const PLUGIN_ICONS: Record<string, IconSpec> = {
 	googledrive: { iconify: 'logos:google-drive' },
 	googlepubsub: { iconify: 'devicon:googlecloud' },
 	grafana: { iconify: 'logos:grafana' },
-	hive: { iconify: 'simple-icons:apachehive' },
+	hive: { iconify: 'simple-icons:apachehive', color: '#D8C700', darkColor: '#FDEE21' },
 	iceberg: { local: 'iceberg', ext: 'svg' },
 	// devicon's Kafka mark is fixed black and disappears on the dark theme.
 	kafka: { local: 'kafka', ext: 'svg', hasDark: true },
@@ -70,25 +82,25 @@ const PLUGIN_ICONS: Record<string, IconSpec> = {
 	mongodb: { iconify: 'devicon:mongodb' },
 	mysql: { iconify: 'devicon:mysql' },
 	nats: { iconify: 'devicon:nats' },
-	nifi: { iconify: 'simple-icons:apachenifi' },
+	nifi: { iconify: 'simple-icons:apachenifi', color: '#728E9B' },
 	openapi: { iconify: 'devicon:openapi' },
 	openmetadata: { local: 'openmetadata', ext: 'png' },
 	opensearch: { iconify: 'logos:opensearch-icon' },
 	oracle: { iconify: 'logos:oracle' },
 	pinot: { local: 'pinot', ext: 'svg' },
 	postgresql: { iconify: 'devicon:postgresql' },
-	prefect: { iconify: 'simple-icons:prefect' },
+	prefect: { iconify: 'simple-icons:prefect', color: '#070E10', darkColor: '#F2EFEC' },
 	presto: { iconify: 'logos:presto-icon' },
 	questdb: { local: 'questdb', ext: 'svg' },
-	redash: { iconify: 'simple-icons:redash' },
+	redash: { iconify: 'simple-icons:redash', color: '#FF7964' },
 	redis: { iconify: 'devicon:redis' },
 	redpanda: { local: 'redpanda', ext: 'svg' },
 	s3: { iconify: 'logos:aws-s3' },
 	// SageMaker has no mark in any Iconify collection, so it falls back to AWS
 	// rather than to a stock robot glyph.
-	sagemaker: { iconify: 'simple-icons:amazonwebservices' },
+	sagemaker: { iconify: 'simple-icons:amazonwebservices', color: '#232F3E', darkColor: '#FF9900' },
 	// SFTP is a protocol, not a product. A glyph is the right answer here.
-	sftp: { iconify: 'mdi:folder-network-outline' },
+	sftp: { iconify: 'mdi:folder-network-outline', color: '#607985', darkColor: '#A2B4C6' },
 	sns: { iconify: 'logos:aws-sns' },
 	spline: { local: 'spline', ext: 'png' },
 	'sql-server': { iconify: 'devicon:microsoftsqlserver' },
@@ -99,7 +111,7 @@ const PLUGIN_ICONS: Record<string, IconSpec> = {
 	// Timescale rebranded to TigerData; simple-icons:timescale is still the old
 	// clock mark, so the current badge lives locally.
 	timescale: { local: 'timescale', ext: 'svg', hasDark: true },
-	trino: { iconify: 'simple-icons:trino' },
+	trino: { iconify: 'simple-icons:trino', color: '#DD00A1', darkColor: '#FF5CC8' },
 	'vertex-ai': { iconify: 'devicon:googlecloud' },
 
 	// Secret stores (secret-stores.yaml). Vendor marks where the product has none.
