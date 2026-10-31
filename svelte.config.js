@@ -5,6 +5,17 @@ import adapter from '@sveltejs/adapter-static';
 const config = {
 	preprocess: vitePreprocess(),
 
+	compilerOptions: {
+		// mm-button and friends render a native button in their shadow root, which Svelte's
+		// a11y checks can't see. Keep the checks for everything else.
+		warningFilter: (w) =>
+			!(
+				(w.code === 'a11y_click_events_have_key_events' ||
+					w.code === 'a11y_no_static_element_interactions') &&
+				/`<mm-[a-z-]+>`/.test(w.message)
+			)
+	},
+
 	kit: {
 		adapter: adapter({
 			pages: 'build',

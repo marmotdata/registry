@@ -15,26 +15,25 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
 	},
 	"devDependencies": {
+		"@marmotdata/svelte": "0.1.2",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.61.1",
 		"@sveltejs/vite-plugin-svelte": "^5.1.1",
-		"@tailwindcss/typography": "^0.5.19",
 		"@types/js-yaml": "^4.0.9",
 		"@types/node": "^24.4.0",
 		"@types/prismjs": "^1.26.6",
-		"autoprefixer": "^10.5.0",
 		"js-yaml": "^4.1.0",
 		"marked": "^15.0.12",
-		"postcss": "^8.5.10",
 		"prismjs": "^1.30.0",
 		"svelte": "^5.55.7",
 		"svelte-check": "^4.4.6",
-		"tailwindcss": "^3.4.19",
 		"typescript": "^5.8.3",
 		"vite": "^6.4.3"
 	},
 	"dependencies": {
-		"@iconify/svelte": "^5.2.1",
-		"lucide-svelte": "^0.511.0"
+		"@marmotdata/css": "0.1.2",
+		"@marmotdata/elements": "0.1.2",
+		"@marmotdata/icons": "0.1.2",
+		"@marmotdata/tokens": "0.1.2"
 	}
 }

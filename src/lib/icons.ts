@@ -1,126 +1,48 @@
-// Icon for every plugin in plugins.yaml. Keys are the `icon:` field, not the
-// plugin name, so plugins can deliberately share a mark (glue/gluepipeline,
-// kafka/kafkaconnect).
+// The mark for every plugin and secret store. Keys are the `icon:` field in plugins.yaml and
+// secret-stores.yaml, not the plugin name, so plugins can deliberately share a mark
+// (glue/gluepipeline, kafka/kafkaconnect).
 //
-// Preference order when picking a mark:
-//   1. the product's own logo, in colour        (logos:*, devicon:*)
-//   2. the product's own logo, monochrome       (simple-icons:*)
-//   3. a local SVG/PNG in static/img            when Iconify has no mark
-//   4. the vendor's logo                        for services with no mark of their own
-//   5. a generic glyph                          only for protocols, never products
+// Most marks come from @marmotdata/icons through <mm-provider-logo>, which bundles them offline and
+// handles Light and Peat. A few are drawn here instead:
+//   - local: the design system has no mark for the product, or only a generic glyph, and the
+//     registry has the real artwork in static/img. Never borrow a neighbouring product's logo.
+//   - provider: the plugin's icon key differs from the design system's provider key.
 //
-// Rule of thumb: never borrow a neighbouring product's logo. Showing Postgres
-// for TimescaleDB or Spark for Spline is worse than showing something generic.
-//
-// hasDark swaps in static/img/dark-<name>.<ext> under the dark theme, for marks
-// that are near-invisible on one background.
-//
-// color tints monochrome marks (simple-icons ships silhouettes) with the
-// brand's own hex from simple-icons' data; darkColor overrides it on the dark
-// theme for brands whose colour is near-black.
-//
-// scale enlarges a mark whose SVG carries a lot of empty padding, so it sits
-// at the same optical size as its neighbours.
+// hasDark swaps in static/img/dark-<name>.<ext> on Peat, for marks near-invisible on one ground.
 
-export interface IconSpec {
-	iconify?: string;
-	local?: string;
-	ext?: 'svg' | 'png';
-	hasDark?: boolean;
-	color?: string;
-	darkColor?: string;
-	scale?: number;
-}
+export type IconSpec =
+	| { provider: string }
+	| { local: string; ext: 'svg' | 'png'; hasDark?: boolean };
 
-const PLUGIN_ICONS: Record<string, IconSpec> = {
-	airflow: { iconify: 'logos:airflow-icon' },
+const LOCAL: Record<string, IconSpec> = {
 	amundsen: { local: 'amundsen', ext: 'svg', hasDark: true },
-	asyncapi: { local: 'asyncapi', ext: 'svg', hasDark: true },
-	athena: { iconify: 'logos:aws-athena' },
-	// Azure Blob has no mark of its own; the Azure logo is the honest stand-in.
-	azureblob: { iconify: 'logos:azure-icon' },
-	bigquery: { iconify: 'devicon:googlecloud' },
-	bigtable: { iconify: 'devicon:googlecloud' },
-	// devicon's eye sits in a heavily padded square and renders tiny; this is
-	// the same artwork with the viewBox cropped to the mark.
-	cassandra: { local: 'cassandra', ext: 'svg' },
-	clickhouse: { iconify: 'devicon:clickhouse' },
-	'cloud-run': { iconify: 'logos:google-cloud-run' },
-	cockroachdb: { iconify: 'simple-icons:cockroachlabs', color: '#6933FF', darkColor: '#9B7BFF' },
 	confluent: { local: 'confluent', ext: 'png' },
-	couchbase: { iconify: 'logos:couchbase' },
 	dagster: { local: 'dagster', ext: 'png' },
-	databricks: { iconify: 'logos:databricks-icon' },
-	dbt: { iconify: 'logos:dbt-icon' },
 	deltalake: { local: 'deltalake', ext: 'svg' },
-	doris: { iconify: 'simple-icons:apachedoris', color: '#444FD9', darkColor: '#7C85FF' },
-	duckdb: { iconify: 'devicon:duckdb' },
-	dynamodb: { iconify: 'logos:aws-dynamodb' },
-	eks: { iconify: 'logos:aws-eks' },
-	elasticsearch: { iconify: 'logos:elasticsearch' },
-	firebase: { iconify: 'logos:firebase-icon' },
-	// Amazon Data Firehose has no mark; it shipped as Kinesis Data Firehose and
-	// still sits in that family.
-	firehose: { iconify: 'logos:aws-kinesis' },
-	flink: { iconify: 'logos:apache-flink-icon' },
-	gcs: { iconify: 'devicon:googlecloud' },
-	gke: { iconify: 'devicon:googlecloud' },
-	glue: { iconify: 'logos:aws-glue' },
-	googledrive: { iconify: 'logos:google-drive' },
-	googlepubsub: { iconify: 'devicon:googlecloud' },
-	grafana: { iconify: 'logos:grafana' },
-	hive: { iconify: 'simple-icons:apachehive', color: '#D8C700', darkColor: '#FDEE21' },
 	iceberg: { local: 'iceberg', ext: 'svg' },
-	// devicon's Kafka mark is fixed black and disappears on the dark theme.
-	kafka: { local: 'kafka', ext: 'svg', hasDark: true },
-	kinesis: { iconify: 'logos:aws-kinesis' },
-	kubernetes: { iconify: 'devicon:kubernetes' },
-	lambda: { iconify: 'logos:aws-lambda' },
-	mariadb: { iconify: 'logos:mariadb-icon' },
-	metabase: { iconify: 'logos:metabase' },
-	mlflow: { local: 'mlflow', ext: 'svg' },
-	mongodb: { iconify: 'devicon:mongodb' },
-	mysql: { iconify: 'devicon:mysql' },
-	nats: { iconify: 'devicon:nats' },
-	nifi: { iconify: 'simple-icons:apachenifi', color: '#728E9B' },
-	openapi: { iconify: 'devicon:openapi' },
 	openmetadata: { local: 'openmetadata', ext: 'png' },
-	opensearch: { iconify: 'logos:opensearch-icon' },
-	oracle: { iconify: 'logos:oracle' },
 	pinot: { local: 'pinot', ext: 'svg' },
-	postgresql: { iconify: 'devicon:postgresql' },
-	prefect: { iconify: 'simple-icons:prefect', color: '#070E10', darkColor: '#F2EFEC' },
-	presto: { iconify: 'logos:presto-icon' },
 	questdb: { local: 'questdb', ext: 'svg' },
-	redash: { iconify: 'simple-icons:redash', color: '#FF7964' },
-	redis: { iconify: 'devicon:redis' },
 	redpanda: { local: 'redpanda', ext: 'svg' },
-	s3: { iconify: 'logos:aws-s3' },
-	// SageMaker has no mark in any Iconify collection, so it falls back to AWS
-	// rather than to a stock robot glyph.
-	sagemaker: { iconify: 'simple-icons:amazonwebservices', color: '#232F3E', darkColor: '#FF9900' },
-	// SFTP is a protocol, not a product. A glyph is the right answer here.
-	sftp: { iconify: 'mdi:folder-network-outline', color: '#607985', darkColor: '#A2B4C6' },
-	sns: { iconify: 'logos:aws-sns' },
 	spline: { local: 'spline', ext: 'png' },
-	'sql-server': { iconify: 'devicon:microsoftsqlserver' },
-	sqlite: { local: 'sqlite', ext: 'png' },
-	sqs: { iconify: 'logos:aws-sqs' },
 	starrocks: { local: 'starrocks', ext: 'svg' },
-	superset: { iconify: 'logos:apache-superset-icon' },
-	// Timescale rebranded to TigerData; simple-icons:timescale is still the old
-	// clock mark, so the current badge lives locally.
+	// Timescale rebranded to TigerData; the design system still carries the old clock mark.
 	timescale: { local: 'timescale', ext: 'svg', hasDark: true },
-	trino: { iconify: 'simple-icons:trino', color: '#DD00A1', darkColor: '#FF5CC8' },
-	'vertex-ai': { iconify: 'devicon:googlecloud' },
 
-	// Secret stores (secret-stores.yaml). Vendor marks where the product has none.
-	'aws-secrets-manager': { iconify: 'logos:aws-secrets-manager' },
-	'azure-key-vault': { iconify: 'logos:azure-icon' },
-	'google-secret-manager': { iconify: 'devicon:googlecloud' },
-	vault: { iconify: 'logos:vault-icon' }
+	// Amazon Data Firehose has no mark; it shipped as Kinesis Data Firehose and sits in that family.
+	firehose: { provider: 'kinesis' },
+
+	// Secret stores. Vendor marks where the product has none of its own.
+	'aws-secrets-manager': { local: 'aws-secrets-manager', ext: 'svg' },
+	'azure-key-vault': { provider: 'azureblob' },
+	'google-secret-manager': { provider: 'gcs' },
+	vault: { local: 'vault', ext: 'svg' },
+
+	// Other ways to populate Marmot, on the Usage tab.
+	terraform: { local: 'terraform', ext: 'svg' },
+	pulumi: { local: 'pulumi', ext: 'svg' }
 };
 
 export function iconSpec(name: string): IconSpec {
-	return PLUGIN_ICONS[name] ?? { iconify: 'lucide:box' };
+	return LOCAL[name] ?? { provider: name };
 }

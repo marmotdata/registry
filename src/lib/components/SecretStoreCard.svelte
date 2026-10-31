@@ -1,50 +1,76 @@
 <!-- Listing card for a Marmot Cloud secret store. Not a link: stores have no
      registry page yet, they ship inside the Cloud server image. -->
 <script lang="ts">
-	import { Cloud, KeyRound } from 'lucide-svelte';
 	import type { SecretStore } from '$lib/types';
+	import { statusInfo } from '$lib/taxonomy';
 	import PluginIcon from './PluginIcon.svelte';
-	import Tag from './Tag.svelte';
-	import StatusTag from './StatusTag.svelte';
 
 	interface Props {
 		store: SecretStore;
 	}
 	let { store }: Props = $props();
+	let status = $derived(store.status ? statusInfo(store.status) : null);
 </script>
 
-<article class="card flex h-full flex-col p-5">
-	<div class="flex items-start gap-3.5">
-		<div class="logo-well h-12 w-12">
-			<PluginIcon iconName={store.icon} alt={store.display_name} size={28} />
-		</div>
-		<div class="min-w-0 flex-1 pt-0.5">
-			<h3 class="m-0 truncate text-base font-semibold text-ink">
-				{store.display_name}
-			</h3>
-			<p class="mt-0.5 truncate font-mono text-xs text-ink-subtle">
-				marmot_secret_store_{store.id}
-			</p>
+<article class="mm-panel card">
+	<div class="head">
+		<PluginIcon iconName={store.icon} size={32} />
+		<div class="title">
+			<h3 class="name">{store.display_name}</h3>
+			<p class="id mm-mono">marmot_secret_store_{store.id}</p>
 		</div>
 	</div>
 
-	<p class="mt-3 line-clamp-3 text-sm text-ink-muted text-pretty">
-		{store.description}
-	</p>
+	<p class="description">{store.description}</p>
 
-	<div class="mt-auto flex flex-wrap items-center gap-1.5 pt-4">
-		<Tag tone="accent" title="Available on Marmot Cloud">
-			{#snippet icon()}<Cloud strokeWidth={2} />{/snippet}
-			Cloud
-		</Tag>
+	<div class="tags">
 		{#if store.federation}
-			<Tag title="How the store authenticates with a Marmot-issued identity">
-				{#snippet icon()}<KeyRound strokeWidth={2} />{/snippet}
-				{store.federation}
-			</Tag>
+			<span class="mm-tag"><mm-icon name="key" size={14}></mm-icon>{store.federation}</span>
 		{/if}
-		{#if store.status}
-			<StatusTag slug={store.status} />
+		{#if status?.attention}
+			<mm-status-pill status={status.tone} icon={status.icon}>{status.label}</mm-status-pill>
 		{/if}
 	</div>
 </article>
+
+<style>
+	.card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+		block-size: 100%;
+		box-sizing: border-box;
+		padding: var(--space-5);
+	}
+	.head {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+	}
+	.title {
+		min-inline-size: 0;
+	}
+	.name {
+		margin: 0;
+		font: var(--text-panel-title);
+		letter-spacing: var(--tracking-panel-title);
+	}
+	.id {
+		margin: 0;
+		color: var(--mm-text-2);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.description {
+		margin: 0;
+		font: var(--text-dense);
+		color: var(--mm-text-2);
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1);
+		margin-block-start: auto;
+	}
+</style>

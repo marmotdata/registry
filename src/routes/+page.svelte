@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { Search, X, SlidersHorizontal, SearchX, BadgeCheck, Users, ArrowUpRight } from 'lucide-svelte';
+	import { onMount, tick } from 'svelte';
+	import type { MmFilterChangeDetail } from '@marmotdata/elements/classes/facet-sidebar.js';
 	import PluginCard from '$lib/components/PluginCard.svelte';
 	import SecretStoreCard from '$lib/components/SecretStoreCard.svelte';
+	import { setProps } from '$lib/props';
 	import { CATEGORIES, categoryInfo, categoryOf, sortFeatures } from '$lib/taxonomy';
 	import { SITE_URL } from '$lib/site';
+	import type { Plugin } from '$lib/types';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -18,10 +20,8 @@
 	let selectedFeatures = $state<string[]>([]);
 	let sort = $state<Sort>('name');
 	let filtersOpen = $state(false);
-	let searchEl = $state<HTMLInputElement | null>(null);
-	let narrow = $state(false);
 
-	function tierOf(p: (typeof data.plugins)[number]): Tier {
+	function tierOf(p: Plugin): Tier {
 		return p.official ? 'official' : 'community';
 	}
 
@@ -40,6 +40,19 @@
 	const featureCounts = $derived(countBy(data.plugins.flatMap((p) => p.features)));
 	const features = $derived(sortFeatures([...featureCounts.keys()]));
 	const tierCounts = $derived(countBy(data.plugins.map(tierOf)));
+
+	const categoryOptions = $derived(
+		categories.map((c) => ({ value: c.id, label: c.label, icon: c.icon, count: categoryCounts.get(c.id) }))
+	);
+	const featureOptions = $derived(
+		features.map((f) => ({ value: f.name, label: f.name, icon: f.icon, count: featureCounts.get(f.name) }))
+	);
+	const tierOptions = $derived(
+		[
+			{ value: 'official', label: 'Marmot', icon: 'verified', count: tierCounts.get('official') },
+			{ value: 'community', label: 'Community', icon: 'groups', count: tierCounts.get('community') }
+		].filter((o) => (o.count ?? 0) > 0)
+	);
 
 	// ---- Filtering -----------------------------------------------------------
 	const filtered = $derived.by(() => {
@@ -64,13 +77,11 @@
 		});
 		if (sort === 'category') {
 			// Curated group order from taxonomy.ts, then by name inside a group.
-			const rank = (p: (typeof list)[number]) => {
+			const rank = (p: Plugin) => {
 				const i = CATEGORIES.findIndex((c) => c.id === categoryOf(p)?.id);
 				return i === -1 ? CATEGORIES.length : i;
 			};
-			return list.sort(
-				(a, b) => rank(a) - rank(b) || a.display_name.localeCompare(b.display_name)
-			);
+			return list.sort((a, b) => rank(a) - rank(b) || a.display_name.localeCompare(b.display_name));
 		}
 		return list.sort((a, b) => a.display_name.localeCompare(b.display_name));
 	});
@@ -78,27 +89,31 @@
 	const activeFilterCount = $derived(
 		selectedTiers.length + selectedCategories.length + selectedFeatures.length
 	);
-	const hasActiveFilters = $derived(activeFilterCount > 0 || query.trim() !== '');
+	const officialCount = $derived(tierCounts.get('official') ?? 0);
 
 	function toggle<T>(list: T[], value: T): T[] {
 		return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
 	}
 
-	function clearAll() {
+	function onFilterChange(e: CustomEvent<MmFilterChangeDetail>) {
+		const f = e.detail.facets;
+		selectedCategories = f.category ?? [];
+		selectedFeatures = f.capability ?? [];
+		selectedTiers = (f.maintainer ?? []) as Tier[];
+	}
+
+	async function clearAll() {
 		selectedTiers = [];
 		selectedCategories = [];
 		selectedFeatures = [];
 		query = '';
+		await tick();
+		(document.querySelector('mm-search-field') as HTMLElement | null)?.focus();
 	}
 
 	// ---- URL sync so filtered views are shareable ---------------------------
 	let hydrated = false;
 	onMount(() => {
-		const mq = window.matchMedia('(max-width: 640px)');
-		narrow = mq.matches;
-		const onChange = (e: MediaQueryListEvent) => (narrow = e.matches);
-		mq.addEventListener('change', onChange);
-
 		const sp = new URLSearchParams(window.location.search);
 		query = sp.get('q') ?? '';
 		selectedCategories = sp.getAll('category').filter((c) => CATEGORIES.some((k) => k.id === c));
@@ -107,8 +122,6 @@
 		const s = sp.get('sort');
 		if (s === 'name' || s === 'category') sort = s;
 		hydrated = true;
-
-		return () => mq.removeEventListener('change', onChange);
 	});
 
 	$effect(() => {
@@ -127,21 +140,6 @@
 		}
 	});
 
-	// ---- Keyboard: "/" focuses search, Esc clears it --------------------------
-	function onKeydown(e: KeyboardEvent) {
-		const target = e.target as HTMLElement | null;
-		const typing = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
-		if (e.key === '/' && !typing) {
-			e.preventDefault();
-			searchEl?.focus();
-		} else if (e.key === 'Escape' && target === searchEl) {
-			query = '';
-			searchEl?.blur();
-		}
-	}
-
-	const officialCount = $derived(tierCounts.get('official') ?? 0);
-
 	// Secret stores answer the search box but not the plugin facets. The section
 	// hides when a facet is active so a filtered plugin list stays a plugin list.
 	const matchingStores = $derived.by(() => {
@@ -158,341 +156,131 @@
 		);
 	});
 </script>
-
-<svelte:window onkeydown={onKeydown} />
-
 <svelte:head>
 	<title>Marmot Plugin Registry</title>
 	<meta property="og:title" content="Marmot Plugin Registry" />
-	<meta property="og:description" content="A registry of plugins for Marmot — the open-source data catalog." />
+	<meta
+		property="og:description"
+		content="Plugins that connect Marmot, the open-source data catalog, to the tools you already run."
+	/>
 	<meta property="og:url" content={SITE_URL} />
 </svelte:head>
 
 <!-- Hero ------------------------------------------------------------------ -->
-<section class="relative mb-10 sm:mb-12">
-	<div
-		class="pointer-events-none absolute inset-x-0 -top-8 -z-10 h-72 bg-[radial-gradient(60%_80%_at_50%_0%,rgb(var(--c-accent)/0.10),transparent_70%)]"
-		aria-hidden="true"
-	></div>
-	<div class="mx-auto max-w-3xl text-center">
-		<p class="eyebrow mb-3 text-accent">Marmot Plugin Registry</p>
-		<h1 class="text-balance text-4xl font-bold tracking-tightest text-ink sm:text-5xl">
-			Plugins for every corner of your data stack
-		</h1>
-		<p class="mx-auto mt-4 max-w-xl text-balance text-lg leading-relaxed text-ink-muted">
-			Connect Marmot to {data.pluginCount} sources. Each plugin discovers assets, captures
-			lineage, and keeps your catalog current.
-		</p>
+<section class="hero mm-topography mm-topography--fade-edges" aria-labelledby="hero-title">
+	<p class="mm-label">Marmot Plugin Registry</p>
+	<h1 id="hero-title" class="mm-display-hero">Plugins for every corner of your data stack</h1>
+	<p class="lead">
+		Connect Marmot to the sources you already run. Each plugin discovers assets, captures lineage and
+		keeps your catalog current.
+	</p>
 
-		<div class="relative mx-auto mt-7 max-w-2xl">
-			<Search
-				size={18}
-				class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-subtle"
-			/>
-			<input
-				bind:this={searchEl}
-				type="search"
-				placeholder={narrow ? 'Search plugins…' : 'Search by name, category, or capability…'}
-				bind:value={query}
-				aria-label="Search plugins"
-				autocomplete="off"
-				spellcheck="false"
-				class="w-full rounded-2xl border border-line bg-surface py-4 pl-12 pr-24 text-base text-ink shadow-card placeholder:text-ink-subtle transition-[box-shadow,border-color] focus:border-accent/60 focus:outline-none focus:ring-4 focus:ring-accent/10 [&::-webkit-search-cancel-button]:hidden"
-			/>
-			<div class="pointer-events-none absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
-				{#if query}
-					<button
-						type="button"
-						onclick={() => (query = '')}
-						class="icon-btn pointer-events-auto"
-						aria-label="Clear search"
-					>
-						<X size={15} />
-					</button>
-				{:else}
-					<kbd
-						class="hidden h-7 min-w-7 items-center justify-center rounded-md border border-line bg-surface-2 px-2 text-xs font-medium text-ink-subtle sm:inline-flex"
-						title="Press / to search"
-					>
-						/
-					</kbd>
-				{/if}
-			</div>
-		</div>
+	<mm-search-field
+		class="search"
+		label="Search plugins"
+		hide-label
+		placeholder="Search by name, category or capability"
+		shortcut="/"
+		global-shortcut
+		value={query}
+		oninput={(e: Event) => (query = (e.currentTarget as HTMLInputElement).value)}
+	></mm-search-field>
 
-		<dl class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-ink-muted">
-			<div class="flex items-baseline gap-1.5">
-				<dd class="m-0 font-semibold text-ink">{data.pluginCount}</dd>
-				<dt>plugins</dt>
-			</div>
-			<div class="flex items-baseline gap-1.5">
-				<dd class="m-0 font-semibold text-ink">{categories.length}</dd>
-				<dt>categories</dt>
-			</div>
-			<div class="flex items-baseline gap-1.5">
-				<dd class="m-0 font-semibold text-ink">{officialCount}</dd>
-				<dt>maintained by Marmot</dt>
-			</div>
-			<a
-				href="#secret-stores"
-				class="flex items-baseline gap-1.5 rounded transition-colors hover:text-accent"
-				title="Jump to secret stores"
-			>
-				<dd class="m-0 font-semibold text-ink">{data.secretStores.length}</dd>
-				<dt>secret stores</dt>
-			</a>
-		</dl>
-	</div>
+	<ul class="stats">
+		<li><span class="mm-num">{data.pluginCount}</span> plugins</li>
+		<li><span class="mm-num">{categories.length}</span> categories</li>
+		<li><span class="mm-num">{officialCount}</span> maintained by Marmot</li>
+		<li>
+			<a href="#secret-stores"><span class="mm-num">{data.secretStores.length}</span> secret stores</a>
+		</li>
+	</ul>
 </section>
 
 <!-- Browse ---------------------------------------------------------------- -->
-<div class="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10">
-	<!-- Mobile filter toggle -->
-	<div class="flex items-center justify-between lg:hidden">
-		<button
-			type="button"
+<div class="browse">
+	<div class="filters-toggle">
+		<mm-button
+			icon="filter-list"
+			expanded={filtersOpen ? 'true' : 'false'}
+			controls="filters"
 			onclick={() => (filtersOpen = !filtersOpen)}
-			class="btn-secondary"
-			aria-expanded={filtersOpen}
-			aria-controls="filters"
 		>
-			<SlidersHorizontal size={15} />
 			Filters
-			{#if activeFilterCount > 0}
-				<span class="rounded-full bg-accent px-2 text-xs font-semibold text-white">{activeFilterCount}</span>
-			{/if}
-		</button>
-		{#if hasActiveFilters}
-			<button type="button" onclick={clearAll} class="btn-ghost text-xs">Clear all</button>
-		{/if}
+			{#if activeFilterCount > 0}<mm-count value={activeFilterCount} label="applied"></mm-count>{/if}
+		</mm-button>
 	</div>
 
-	<aside
-		id="filters"
-		class="{filtersOpen ? 'block' : 'hidden'} lg:sticky lg:top-20 lg:block lg:self-start"
-	>
-		<div class="mb-4 flex h-7 items-center justify-between">
-			<h2 class="m-0 text-base font-semibold text-ink">Filters</h2>
-			{#if activeFilterCount > 0}
-				<button
-					type="button"
-					onclick={() => {
-						selectedTiers = [];
-						selectedCategories = [];
-						selectedFeatures = [];
-					}}
-					class="inline-flex items-center gap-1 text-xs font-medium text-ink-subtle hover:text-accent"
-				>
-					<X size={12} />
-					Reset
-				</button>
-			{/if}
+	<!-- Applied filters show once, as pills in the results toolbar. -->
+	<mm-facet-sidebar id="filters" class="filters" class:open={filtersOpen} hide-applied onmm-filter-change={onFilterChange}>
+		<mm-facet
+			name="category"
+			label="Category"
+			limit={12}
+			use:setProps={{ options: categoryOptions, value: selectedCategories }}
+		></mm-facet>
+		<mm-facet
+			name="capability"
+			label="Capabilities"
+			use:setProps={{ options: featureOptions, value: selectedFeatures }}
+		></mm-facet>
+		<mm-facet
+			name="maintainer"
+			label="Maintainer"
+			use:setProps={{ options: tierOptions, value: selectedTiers }}
+		></mm-facet>
+		<div slot="footer" class="build-own">
+			<p class="mm-heading-sm">Missing an integration?</p>
+			<p class="mm-caption">Plugins are small Go programs built with the SDK.</p>
+			<mm-link href="https://marmotdata.io/docs/Develop/creating-plugins" external>Build your own</mm-link>
 		</div>
+	</mm-facet-sidebar>
 
-		<div class="space-y-7">
-			<section>
-				<h3 class="eyebrow mb-2">Category</h3>
-				<ul class="m-0 -mx-2 list-none space-y-px p-0">
-					{#each categories as cat (cat.id)}
-						{@const active = selectedCategories.includes(cat.id)}
-						<li>
-							<button
-								type="button"
-								onclick={() => (selectedCategories = toggle(selectedCategories, cat.id))}
-								aria-pressed={active}
-								title={cat.description}
-								class="group flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors {active
-									? 'bg-accent-soft font-medium text-accent-ink'
-									: 'text-ink-muted hover:bg-surface-3 hover:text-ink'}"
-							>
-								<cat.icon
-									size={15}
-									strokeWidth={2}
-									class="flex-shrink-0 {active ? 'text-accent' : 'text-ink-subtle group-hover:text-ink-muted'}"
-								/>
-								<span class="min-w-0 flex-1 truncate">{cat.label}</span>
-								<span
-									class="text-xs tabular-nums {active ? 'text-accent-ink/70' : 'text-ink-subtle'}"
-								>
-									{categoryCounts.get(cat.id)}
-								</span>
-							</button>
-						</li>
-					{/each}
-				</ul>
-			</section>
-
-			<section>
-				<h3 class="eyebrow mb-2">Capabilities</h3>
-				<ul class="m-0 -mx-2 list-none space-y-px p-0">
-					{#each features as f (f.name)}
-						{@const active = selectedFeatures.includes(f.name)}
-						<li>
-							<button
-								type="button"
-								onclick={() => (selectedFeatures = toggle(selectedFeatures, f.name))}
-								aria-pressed={active}
-								title={f.description}
-								class="group flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors {active
-									? 'bg-accent-soft font-medium text-accent-ink'
-									: 'text-ink-muted hover:bg-surface-3 hover:text-ink'}"
-							>
-								<f.icon
-									size={15}
-									strokeWidth={2}
-									class="flex-shrink-0 {active ? 'text-accent' : 'text-ink-subtle group-hover:text-ink-muted'}"
-								/>
-								<span class="min-w-0 flex-1 truncate">{f.name}</span>
-								<span
-									class="text-xs tabular-nums {active ? 'text-accent-ink/70' : 'text-ink-subtle'}"
-								>
-									{featureCounts.get(f.name)}
-								</span>
-							</button>
-						</li>
-					{/each}
-				</ul>
-			</section>
-
-			<section>
-				<h3 class="eyebrow mb-2">Maintainer</h3>
-				<ul class="m-0 -mx-2 list-none space-y-px p-0">
-					{#each [{ id: 'official' as Tier, label: 'Official', icon: BadgeCheck, hint: 'Built and supported by the Marmot team' }, { id: 'community' as Tier, label: 'Community', icon: Users, hint: 'Contributed by the community' }] as tier (tier.id)}
-						{@const active = selectedTiers.includes(tier.id)}
-						{@const count = tierCounts.get(tier.id) ?? 0}
-						<li>
-							<button
-								type="button"
-								onclick={() => (selectedTiers = toggle(selectedTiers, tier.id))}
-								aria-pressed={active}
-								title={tier.hint}
-								disabled={count === 0}
-								class="group flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 {active
-									? 'bg-accent-soft font-medium text-accent-ink'
-									: 'text-ink-muted enabled:hover:bg-surface-3 enabled:hover:text-ink'}"
-							>
-								<tier.icon
-									size={15}
-									strokeWidth={2}
-									class="flex-shrink-0 {active ? 'text-accent' : 'text-ink-subtle group-hover:text-ink-muted'}"
-								/>
-								<span class="min-w-0 flex-1 truncate">{tier.label}</span>
-								<span
-									class="text-xs tabular-nums {active ? 'text-accent-ink/70' : 'text-ink-subtle'}"
-								>
-									{count}
-								</span>
-							</button>
-						</li>
-					{/each}
-				</ul>
-			</section>
-
-			<section class="rounded-xl border border-dashed border-line-strong p-3.5">
-				<p class="m-0 text-sm font-semibold text-ink">Missing an integration?</p>
-				<p class="mb-3 mt-1 text-sm leading-relaxed text-ink-muted">
-					Plugins are small Go programs built with the SDK.
-				</p>
-				<a
-					href="https://marmotdata.io/docs/Develop/creating-plugins"
-					target="_blank"
-					rel="noopener"
-					class="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
-				>
-					Build your own
-					<ArrowUpRight size={13} />
-				</a>
-			</section>
-		</div>
-	</aside>
-
-	<div class="min-w-0">
+	<div class="results">
 		<!-- Toolbar -->
-		<div class="mb-4 flex min-h-8 flex-wrap items-center gap-x-4 gap-y-2">
-			<p class="m-0 text-sm text-ink-muted" aria-live="polite">
-				<span class="font-semibold text-ink">{filtered.length}</span>
+		<div class="toolbar">
+			<p class="count mm-dense" aria-live="polite">
+				<span class="mm-num">{filtered.length}</span>
 				{filtered.length === 1 ? 'plugin' : 'plugins'}
-				{#if filtered.length !== data.plugins.length}
-					<span class="text-ink-subtle">of {data.plugins.length}</span>
-				{/if}
 			</p>
 
 			{#if activeFilterCount > 0}
-				<div class="flex flex-wrap items-center gap-1.5">
+				<div class="applied" aria-label="Applied filters" role="group">
 					{#each selectedCategories as c (c)}
-						{@const info = categoryInfo(c)}
-						<button
-							type="button"
-							onclick={() => (selectedCategories = toggle(selectedCategories, c))}
-							class="inline-flex h-7 items-center gap-1 rounded-md border border-earthy-terracotta-200 bg-accent-soft pl-2.5 pr-1.5 text-xs font-medium text-accent-ink transition-colors hover:border-accent/50 dark:border-earthy-terracotta-800/50"
-							aria-label="Remove filter {info.label}"
+						<mm-filter-pill removable onmm-remove={() => (selectedCategories = toggle(selectedCategories, c))}
+							>{categoryInfo(c).label}</mm-filter-pill
 						>
-							{info.label}
-							<X size={12} class="opacity-60" />
-						</button>
 					{/each}
 					{#each selectedFeatures as f (f)}
-						<button
-							type="button"
-							onclick={() => (selectedFeatures = toggle(selectedFeatures, f))}
-							class="inline-flex h-7 items-center gap-1 rounded-md border border-earthy-terracotta-200 bg-accent-soft pl-2.5 pr-1.5 text-xs font-medium text-accent-ink transition-colors hover:border-accent/50 dark:border-earthy-terracotta-800/50"
-							aria-label="Remove filter {f}"
+						<mm-filter-pill removable onmm-remove={() => (selectedFeatures = toggle(selectedFeatures, f))}
+							>{f}</mm-filter-pill
 						>
-							{f}
-							<X size={12} class="opacity-60" />
-						</button>
 					{/each}
 					{#each selectedTiers as t (t)}
-						<button
-							type="button"
-							onclick={() => (selectedTiers = toggle(selectedTiers, t))}
-							class="inline-flex h-7 items-center gap-1 rounded-md border border-earthy-terracotta-200 bg-accent-soft pl-2.5 pr-1.5 text-xs font-medium capitalize text-accent-ink transition-colors hover:border-accent/50 dark:border-earthy-terracotta-800/50"
-							aria-label="Remove filter {t}"
+						<mm-filter-pill removable onmm-remove={() => (selectedTiers = toggle(selectedTiers, t))}
+							>{t === 'official' ? 'Marmot' : 'Community'}</mm-filter-pill
 						>
-							{t}
-							<X size={12} class="opacity-60" />
-						</button>
 					{/each}
 				</div>
 			{/if}
 
-			<label class="ml-auto flex items-center gap-2 text-sm text-ink-subtle">
-				Sort
-				<select
-					bind:value={sort}
-					class="h-9 cursor-pointer rounded-lg border border-line bg-surface pl-3 pr-8 text-sm font-medium text-ink transition-colors hover:border-line-strong focus:border-accent/60 focus:outline-none"
-				>
-					<option value="name">Name</option>
-					<option value="category">Category</option>
-				</select>
-			</label>
+			<mm-select
+				class="sort"
+				label="Sort by"
+				hide-label
+				value={sort}
+				onchange={(e: Event) => (sort = (e.currentTarget as HTMLInputElement).value as Sort)}
+			>
+				<mm-option value="name">Sort by name</mm-option>
+				<mm-option value="category">Sort by category</mm-option>
+			</mm-select>
 		</div>
 
 		{#if filtered.length === 0 && matchingStores.length === 0}
-			<div class="card flex flex-col items-center px-6 py-16 text-center">
-				<div class="logo-well mb-4 h-14 w-14">
-					<SearchX size={24} class="text-ink-subtle" />
-				</div>
-				<h3 class="m-0 text-base font-semibold text-ink">No plugins match</h3>
-				<p class="mx-auto mt-1.5 max-w-sm text-sm text-ink-muted">
-					Try a different search term or remove a filter. Missing something? Every plugin starts
-					as a small Go program.
-				</p>
-				<div class="mt-5 flex flex-wrap items-center justify-center gap-2">
-					<button type="button" onclick={clearAll} class="btn-secondary">Clear filters</button>
-					<a
-						href="https://marmotdata.io/docs/Develop/creating-plugins"
-						target="_blank"
-						rel="noopener"
-						class="btn-ghost"
-					>
-						Build a plugin
-						<ArrowUpRight size={14} />
-					</a>
-				</div>
-			</div>
+			<mm-empty-state heading="No plugins match" description="Try a different search term, or clear the filters to see every plugin.">
+				<mm-button slot="action" variant="primary" onclick={clearAll}>Clear search and filters</mm-button>
+			</mm-empty-state>
 		{:else if filtered.length > 0}
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+			<div class="grid">
 				{#each filtered as plugin (plugin.namespace + '/' + plugin.name)}
 					<PluginCard {plugin} />
 				{/each}
@@ -500,34 +288,19 @@
 		{/if}
 
 		{#if matchingStores.length > 0}
-			<section
-				id="secret-stores"
-				class="mt-12 scroll-mt-24 border-t border-line pt-10"
-				aria-labelledby="secret-stores-heading"
-			>
-				<div class="mb-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
-					<div class="max-w-2xl">
-						<p class="eyebrow mb-1.5 text-accent">Marmot Cloud</p>
-						<h2 id="secret-stores-heading" class="m-0 text-2xl font-bold tracking-tight text-ink">
-							Secret stores
-						</h2>
-						<p class="m-0 mt-1.5 text-base leading-relaxed text-ink-muted text-pretty">
-							Keep credentials in the secret manager you already run. Marmot stores the address of a
-							secret, reads the value just before a pipeline runs, and never keeps it. Available on every
-							Marmot Cloud plan.
+			<section id="secret-stores" class="stores" aria-labelledby="secret-stores-heading">
+				<div class="stores-head">
+					<div>
+						<p class="mm-label">Marmot Cloud</p>
+						<h2 id="secret-stores-heading" class="mm-display-section">Secret stores</h2>
+						<p class="stores-lead">
+							Keep credentials in the secret manager you already run. Marmot reads each secret just before a
+							pipeline runs and never stores it.
 						</p>
 					</div>
-					<a
-						href="https://marmotdata.io/pricing"
-						target="_blank"
-						rel="noopener"
-						class="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
-					>
-						About Marmot Cloud
-						<ArrowUpRight size={14} />
-					</a>
+					<mm-link href="https://marmotdata.io/pricing" external>About Marmot Cloud</mm-link>
 				</div>
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+				<div class="grid grid--two">
 					{#each matchingStores as store (store.id)}
 						<SecretStoreCard {store} />
 					{/each}
@@ -536,3 +309,179 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.hero {
+		display: grid;
+		justify-items: center;
+		gap: var(--space-4);
+		margin-inline: calc(-1 * var(--space-8));
+		margin-block: calc(-1 * var(--space-8)) var(--space-8);
+		padding: var(--space-12) var(--space-8);
+		text-align: center;
+	}
+	.hero > * {
+		margin: 0;
+	}
+	.hero h1 {
+		max-inline-size: 18ch;
+		text-wrap: balance;
+	}
+	.lead {
+		max-inline-size: 56ch;
+		font: var(--text-body);
+		color: var(--mm-text-2);
+		text-wrap: balance;
+	}
+	.search {
+		inline-size: min(100%, 40rem);
+		margin-block-start: var(--space-2);
+		text-align: start;
+	}
+	.stats {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-2) var(--space-6);
+		padding: 0;
+		list-style: none;
+		font: var(--text-dense);
+		color: var(--mm-text-2);
+	}
+	.stats .mm-num {
+		font-weight: 600;
+		color: var(--mm-text);
+	}
+	.stats a {
+		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		text-decoration-thickness: 1px;
+	}
+	.stats a:hover {
+		color: var(--mm-text);
+		text-decoration-thickness: 2px;
+	}
+
+	.browse {
+		display: grid;
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: var(--space-8);
+		align-items: start;
+	}
+	.filters-toggle {
+		display: none;
+	}
+	.filters {
+		position: sticky;
+		inset-block-start: calc(var(--mm-control) + var(--space-8));
+	}
+	.build-own {
+		display: grid;
+		gap: var(--space-1);
+		justify-items: start;
+	}
+	.build-own p {
+		margin: 0;
+	}
+
+	.toolbar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2) var(--space-4);
+		margin-block-end: var(--space-4);
+	}
+	.count {
+		margin: 0;
+		color: var(--mm-text-2);
+	}
+	.count .mm-num {
+		font-weight: 600;
+		color: var(--mm-text);
+	}
+	.applied {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1);
+	}
+	.sort {
+		inline-size: 11rem;
+		margin-inline-start: auto;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-4);
+	}
+	.grid--two {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.stores {
+		margin-block-start: var(--space-12);
+		padding-block-start: var(--space-8);
+		border-block-start: 1px solid var(--mm-rule);
+	}
+	.stores-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: end;
+		justify-content: space-between;
+		gap: var(--space-3) var(--space-6);
+		margin-block-end: var(--space-5);
+	}
+	.stores-head p,
+	.stores-head h2 {
+		margin: 0;
+	}
+	.stores-head h2 {
+		margin-block: var(--space-1);
+	}
+	.stores-lead {
+		max-inline-size: 64ch;
+		font: var(--text-body);
+		color: var(--mm-text-2);
+	}
+
+	@media (max-width: 1280px) {
+		.grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 960px) {
+		.browse {
+			grid-template-columns: minmax(0, 1fr);
+			gap: var(--space-4);
+		}
+		.filters-toggle {
+			display: block;
+		}
+		.filters {
+			display: none;
+			position: static;
+		}
+		.filters.open {
+			display: block;
+		}
+	}
+	@media (max-width: 720px) {
+		.hero {
+			margin-inline: calc(-1 * var(--space-4));
+			margin-block-start: calc(-1 * var(--space-6));
+			padding: var(--space-8) var(--space-4);
+		}
+		.hero h1 {
+			font: var(--text-display-title);
+			letter-spacing: var(--tracking-display-title);
+		}
+		.grid,
+		.grid--two {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.sort {
+			margin-inline-start: 0;
+		}
+	}
+</style>

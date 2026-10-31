@@ -44,24 +44,22 @@ marked.use({
 			const html = grammar
 				? Prism.highlight(text, grammar, canonical)
 				: escapeHtml(text);
-			const cls = canonical ? ` language-${canonical}` : '';
-			return `<pre class="code-block${cls}"><code class="code-block${cls}">${html}</code></pre>\n`;
+			const cls = canonical ? ` class="language-${canonical}"` : '';
+			return `<pre${cls}><code${cls}>${html}</code></pre>\n`;
 		}
 	}
 });
 
 // Docusaurus-style admonitions: :::tip[Title]\n...body...\n:::
-// Body is parsed as markdown so nested code blocks still get highlighted.
-const ADMONITION_ICONS = {
-	tip: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>',
-	note: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"/><path d="M15 3v6h6"/></svg>',
-	info: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
-	warning:
-		'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
-	caution:
-		'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
-	danger:
-		'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 20h20L12 2Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>'
+// Body is parsed as markdown so nested code blocks still get highlighted. They render as the
+// design system's callout (@marmotdata/css .mm-callout) with a Material Symbol from mm-icon.
+const ADMONITIONS = {
+	tip: { tone: 'success', icon: 'check-circle' },
+	note: { tone: 'info', icon: 'info' },
+	info: { tone: 'info', icon: 'info' },
+	warning: { tone: 'warning', icon: 'warning' },
+	caution: { tone: 'warning', icon: 'warning' },
+	danger: { tone: 'danger', icon: 'error' }
 };
 
 marked.use({
@@ -90,11 +88,12 @@ marked.use({
 			},
 			renderer(token) {
 				const body = this.parser.parse(token.tokens);
-				const icon = ADMONITION_ICONS[token.admType] ?? '';
+				const { tone, icon } = ADMONITIONS[token.admType] ?? ADMONITIONS.note;
 				return (
-					`<div class="admonition admonition-${token.admType}">` +
-					`<div class="admonition-heading">${icon}<span>${escapeHtml(token.title)}</span></div>` +
-					`<div class="admonition-body">${body}</div>` +
+					`<div class="mm-callout mm-callout--${tone}" role="note">` +
+					`<mm-icon name="${icon}"></mm-icon>` +
+					`<p class="mm-callout__title">${escapeHtml(token.title)}</p>` +
+					`<div class="mm-callout__body">${body}</div>` +
 					`</div>\n`
 				);
 			}

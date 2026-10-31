@@ -2,33 +2,11 @@
 // features and statuses. plugins.yaml stores machine slugs; this module maps
 // them to labels, icons and tones so tags read consistently everywhere.
 
-import {
-	Database,
-	Warehouse,
-	HardDrive,
-	Workflow,
-	Container,
-	LayoutDashboard,
-	BookOpen,
-	Brain,
-	Radio,
-	Search as SearchIcon,
-	Boxes,
-	GitBranch,
-	History,
-	BookA,
-	FlaskConical,
-	CircleCheck,
-	CircleAlert,
-	Sparkles,
-	Tag
-} from 'lucide-svelte';
+/** A Material Symbols name from the @marmotdata/icons subset, drawn with <mm-icon>. */
+export type IconName = string;
 
-/** lucide-svelte ships class components; derive the type from one of them. */
-export type IconComponent = typeof Database;
-
-/** Colour family for a tag. Neutral is the default; tints are used sparingly. */
-export type Tone = 'neutral' | 'blue' | 'green' | 'amber' | 'red' | 'accent';
+/** Status pill tone. Never burnt sienna: status has its own colours. */
+export type StatusTone = 'success' | 'warning' | 'info' | 'danger' | 'neutral';
 
 /**
  * Browse categories.
@@ -45,7 +23,7 @@ export interface CategoryInfo {
 	id: string;
 	label: string;
 	description: string;
-	icon: IconComponent;
+	icon: IconName;
 	/** Raw plugins.yaml slugs that map here. */
 	slugs: string[];
 }
@@ -55,70 +33,70 @@ export const CATEGORIES: CategoryInfo[] = [
 		id: 'databases',
 		label: 'Databases',
 		description: 'Operational relational, document, key-value and time-series stores',
-		icon: Database,
+		icon: 'database',
 		slugs: ['database']
 	},
 	{
 		id: 'warehouses',
 		label: 'Warehouses',
 		description: 'Analytical warehouses and distributed query engines',
-		icon: Warehouse,
+		icon: 'dataset',
 		slugs: ['data-warehouse']
 	},
 	{
 		id: 'storage',
 		label: 'Storage',
 		description: 'Object storage, file shares and lakehouse table formats',
-		icon: HardDrive,
+		icon: 'storage',
 		slugs: ['storage', 'data-lake']
 	},
 	{
 		id: 'streaming',
 		label: 'Streaming',
 		description: 'Event streams, message queues and pub/sub',
-		icon: Radio,
+		icon: 'stream',
 		slugs: ['streaming', 'messaging']
 	},
 	{
 		id: 'pipelines',
 		label: 'Pipelines',
 		description: 'Schedulers, ETL, stream processors and transformation tools',
-		icon: Workflow,
+		icon: 'conversion-path',
 		slugs: ['orchestration', 'etl', 'transformation']
 	},
 	{
 		id: 'dashboards',
 		label: 'Dashboards',
 		description: 'Business intelligence and visualisation tools',
-		icon: LayoutDashboard,
+		icon: 'dashboard',
 		slugs: ['dashboard']
 	},
 	{
 		id: 'catalogs',
 		label: 'Catalogs',
 		description: 'Other metadata catalogs and API specifications',
-		icon: BookOpen,
+		icon: 'menu-book',
 		slugs: ['catalog', 'api']
 	},
 	{
 		id: 'ml',
 		label: 'Machine learning',
 		description: 'ML platforms and experiment tracking',
-		icon: Brain,
+		icon: 'model-training',
 		slugs: ['ml']
 	},
 	{
 		id: 'compute',
 		label: 'Compute',
 		description: 'Kubernetes, serverless and container platforms',
-		icon: Container,
+		icon: 'cloud',
 		slugs: ['compute', 'container']
 	},
 	{
 		id: 'search',
 		label: 'Search',
 		description: 'Search and analytics indexes',
-		icon: SearchIcon,
+		icon: 'search',
 		slugs: []
 	}
 ];
@@ -133,11 +111,10 @@ const PLUGIN_OVERRIDES: Record<string, string> = {
 	trino: 'warehouses'
 };
 
-function titleCase(slug: string): string {
-	return slug
-		.split(/[-_]/)
-		.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-		.join(' ');
+/** Sentence case for an unknown slug: "release-candidate" reads "Release candidate". */
+function sentenceCase(slug: string): string {
+	const words = slug.split(/[-_]/).join(' ');
+	return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
 const BY_ID = new Map(CATEGORIES.map((c) => [c.id, c]));
@@ -147,7 +124,7 @@ const OTHER: CategoryInfo = {
 	id: 'other',
 	label: 'Other',
 	description: '',
-	icon: Tag,
+	icon: 'label',
 	slugs: []
 };
 
@@ -167,14 +144,14 @@ export function categoryOf(plugin: { name: string; category: string | null }): C
 export interface FeatureInfo {
 	name: string;
 	description: string;
-	icon: IconComponent;
+	icon: IconName;
 }
 
 const FEATURES: Record<string, Omit<FeatureInfo, 'name'>> = {
-	Assets: { description: 'Discovers assets and their schemas', icon: Boxes },
-	Lineage: { description: 'Captures upstream and downstream lineage', icon: GitBranch },
-	'Run History': { description: 'Records pipeline and job runs', icon: History },
-	Glossary: { description: 'Imports business glossary terms', icon: BookA }
+	Assets: { description: 'Discovers assets and their schemas', icon: 'inventory-2' },
+	Lineage: { description: 'Captures upstream and downstream lineage', icon: 'account-tree' },
+	'Run History': { description: 'Records pipeline and job runs', icon: 'history' },
+	Glossary: { description: 'Imports business glossary terms', icon: 'book-2' }
 };
 
 /** Canonical display order so feature tags line up across cards. */
@@ -182,7 +159,7 @@ const FEATURE_ORDER = Object.keys(FEATURES);
 
 export function featureInfo(name: string): FeatureInfo {
 	const known = FEATURES[name];
-	return known ? { name, ...known } : { name, description: '', icon: Sparkles };
+	return known ? { name, ...known } : { name, description: '', icon: 'label' };
 }
 
 export function sortFeatures(names: string[]): FeatureInfo[] {
@@ -199,34 +176,40 @@ export interface StatusInfo {
 	slug: string;
 	label: string;
 	description: string;
-	icon: IconComponent;
-	tone: Tone;
+	icon: IconName;
+	tone: StatusTone;
+	/** True when the status needs a reader's attention, so lists badge it. */
+	attention: boolean;
 }
 
 const STATUSES: Record<string, Omit<StatusInfo, 'slug'>> = {
 	experimental: {
 		label: 'Experimental',
 		description: 'Early release. Interfaces and output may change between versions.',
-		icon: FlaskConical,
-		tone: 'amber'
+		icon: 'science',
+		tone: 'warning',
+		attention: false
 	},
 	beta: {
 		label: 'Beta',
 		description: 'Feature complete. Gathering feedback before a stable release.',
-		icon: FlaskConical,
-		tone: 'blue'
+		icon: 'construction',
+		tone: 'info',
+		attention: false
 	},
 	stable: {
 		label: 'Stable',
 		description: 'Production ready. Follows semantic versioning.',
-		icon: CircleCheck,
-		tone: 'green'
+		icon: 'check-circle',
+		tone: 'success',
+		attention: false
 	},
 	deprecated: {
 		label: 'Deprecated',
 		description: 'No longer maintained. Migrate to an alternative.',
-		icon: CircleAlert,
-		tone: 'red'
+		icon: 'block',
+		tone: 'danger',
+		attention: true
 	}
 };
 
@@ -234,5 +217,5 @@ export function statusInfo(slug: string): StatusInfo {
 	const known = STATUSES[slug];
 	return known
 		? { slug, ...known }
-		: { slug, label: titleCase(slug), description: '', icon: Tag, tone: 'neutral' };
+		: { slug, label: sentenceCase(slug), description: '', icon: 'label', tone: 'neutral', attention: false };
 }

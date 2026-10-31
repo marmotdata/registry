@@ -1,43 +1,43 @@
+<!--
+  One configuration field as a two-line outline row, following the schema outline: the key (mono,
+  people copy it), its type in everyday words and markers, then the description and any default,
+  example or condition. Nested settings indent under a hairline guide. mm-schema-table is built for
+  data schemas (nullability, PII, field statistics), so plugin config gets this lighter outline.
+-->
 <script lang="ts">
-	import { Asterisk, Lock } from 'lucide-svelte';
 	import type { ConfigField } from '$lib/types';
-	import type { Tone } from '$lib/taxonomy';
-	import Tag from './Tag.svelte';
 	import Self from './ConfigFieldRow.svelte';
 
 	interface Props {
 		field: ConfigField;
-		nested?: boolean;
-		parentRequired?: boolean;
+		/** Name of the optional group this field sits in, if any. */
+		optionalParent?: string;
 	}
 
-	let { field, nested = false, parentRequired = true }: Props = $props();
+	let { field, optionalParent }: Props = $props();
 
-	// A subfield can be structurally required (every entry in an object[]
-	// must have `url`) while its parent object is optional. Scope the tooltip
-	// so it doesn't read as "you must fill this in".
-	let requiredTooltip = $derived(
-		field.required && !parentRequired ? 'Required when this object is provided' : 'Required'
-	);
-	let childrenInherit = $derived(parentRequired && (field.required ?? false));
-
-	const TYPE_TONE: Record<string, Tone> = {
-		string: 'blue',
-		int: 'green',
-		bool: 'amber',
-		select: 'neutral',
-		multiselect: 'neutral',
-		password: 'accent',
-		object: 'neutral'
-	};
-
-	function typeLabel(f: ConfigField): string {
-		if (f.type === 'object') return f.is_array ? 'object[]' : 'object';
-		return f.type;
+	function plainType(f: ConfigField): string {
+		switch (f.type) {
+			case 'string':
+				return 'Text';
+			case 'int':
+				return 'Number';
+			case 'bool':
+				return 'Yes or no';
+			case 'select':
+				return f.options?.length ? 'One of' : 'Text';
+			case 'multiselect':
+				return f.options?.length ? 'Any of' : 'List of text';
+			case 'password':
+				return 'Secret';
+			case 'object':
+				return f.is_array ? 'List of groups' : 'Group of settings';
+			default:
+				return f.type;
+		}
 	}
 
-	function fmtDefault(v: unknown): string {
-		if (v === null || v === undefined) return '';
+	function fmt(v: unknown): string {
 		if (typeof v === 'string') return v;
 		return JSON.stringify(v);
 	}
@@ -45,70 +45,121 @@
 	let hasDefault = $derived(
 		field.default !== undefined && field.default !== null && field.default !== ''
 	);
+	let scopedRequired = $derived(field.required && optionalParent !== undefined);
+	// Subfields of an optional group are only required once the group is given.
+	let childParent = $derived(
+		optionalParent ?? (field.required ? undefined : field.name)
+	);
 </script>
 
-<div class="flex flex-wrap items-start gap-x-4 gap-y-1.5 py-3.5 sm:flex-nowrap {nested ? 'pl-4 pr-3' : 'px-4'}">
-	<div class="flex min-w-0 flex-wrap items-center gap-1.5 sm:w-60 sm:flex-shrink-0">
-		<code class="break-all font-mono text-sm font-semibold text-ink">{field.name}</code>
-		<Tag tone={TYPE_TONE[field.type] ?? 'neutral'} mono>{typeLabel(field)}</Tag>
-		{#if field.required}
-			<span
-				class="inline-flex flex-shrink-0 items-center text-accent"
-				title={requiredTooltip}
-				aria-label={requiredTooltip}
-			>
-				<Asterisk size={13} strokeWidth={2.5} />
-			</span>
-		{/if}
-		{#if field.sensitive}
-			<span class="inline-flex flex-shrink-0 items-center text-ink-subtle" title="Sensitive value">
-				<Lock size={12} />
-			</span>
+<li class="field">
+	<div class="head">
+		<code class="key">{field.name}</code>
+		<span class="type">{plainType(field)}</span>
+		{#if field.required && !scopedRequired}<span class="mm-tag">Required</span>{/if}
+		{#if field.sensitive && field.type !== 'password'}
+			<span class="mm-tag"><mm-icon name="lock" size={14}></mm-icon>Secret</span>
 		{/if}
 	</div>
 
-	<div class="min-w-0 flex-1">
-		{#if field.description}
-			<p class="m-0 text-sm text-ink-muted">{field.description}</p>
-		{/if}
+	{#if field.description}
+		<p class="description">{field.description}</p>
+	{/if}
 
-		{#if hasDefault || field.placeholder || field.show_when}
-			<dl class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-subtle">
-				{#if hasDefault}
-					<div class="flex items-center gap-1.5">
-						<dt>default</dt>
-						<dd class="m-0 rounded bg-surface-3 px-1.5 py-0.5 font-mono text-ink-muted">{fmtDefault(field.default)}</dd>
-					</div>
-				{/if}
-				{#if field.placeholder}
-					<div class="flex items-center gap-1.5">
-						<dt>example</dt>
-						<dd class="m-0 rounded bg-surface-3 px-1.5 py-0.5 font-mono text-ink-muted">{field.placeholder}</dd>
-					</div>
-				{/if}
-				{#if field.show_when}
-					<div class="flex items-center gap-1.5">
-						<dt>shown when</dt>
-						<dd class="m-0 rounded bg-surface-3 px-1.5 py-0.5 font-mono text-ink-muted">{field.show_when.field} = {field.show_when.value}</dd>
-					</div>
-				{/if}
-			</dl>
-		{/if}
+	{#if field.options && field.options.length > 0}
+		<p class="meta">
+			<span class="term">Values</span>
+			{#each field.options as opt, i (opt.value)}<code title={opt.label !== opt.value ? opt.label : undefined}
+					>{opt.value}</code
+				>{i < field.options.length - 1 ? ', ' : ''}{/each}
+		</p>
+	{/if}
 
-		{#if field.options && field.options.length > 0}
-			<div class="mt-2 flex flex-wrap gap-1">
-				{#each field.options as opt (opt.value)}
-					<Tag mono title={opt.label !== opt.value ? opt.label : undefined}>{opt.value}</Tag>
-				{/each}
-			</div>
-		{/if}
+	{#if hasDefault || field.placeholder || field.show_when || scopedRequired}
+		<p class="meta">
+			{#if scopedRequired}
+				<span>Required when <code>{optionalParent}</code> is set</span>
+			{/if}
+			{#if hasDefault}
+				<span><span class="term">Default</span> <code>{fmt(field.default)}</code></span>
+			{/if}
+			{#if field.placeholder}
+				<span><span class="term">Example</span> <code>{field.placeholder}</code></span>
+			{/if}
+			{#if field.show_when}
+				<span
+					>Used when <code>{field.show_when.field}</code> is <code>{field.show_when.value}</code></span
+				>
+			{/if}
+		</p>
+	{/if}
 
-		{#if field.fields && field.fields.length > 0}
-			<div class="mt-3 divide-y divide-line rounded-lg border border-line bg-surface-2/60">
-				{#each field.fields as sub (sub.name)}
-					<Self field={sub} nested parentRequired={childrenInherit} />
-				{/each}
-			</div>
-		{/if}
-	</div>
-</div>
+	{#if field.fields && field.fields.length > 0}
+		<ul class="children">
+			{#each field.fields as sub (sub.name)}
+				<Self field={sub} optionalParent={childParent} />
+			{/each}
+		</ul>
+	{/if}
+</li>
+
+<style>
+	.field {
+		display: grid;
+		gap: var(--space-1);
+		padding-block: var(--space-3);
+		border-block-start: 1px solid var(--mm-rule);
+	}
+	.field:first-child {
+		border-block-start: 0;
+	}
+	.head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2);
+	}
+	.key {
+		font: var(--text-mono);
+		letter-spacing: var(--tracking-mono);
+		background: none;
+		padding: 0;
+		color: var(--mm-text);
+		font-weight: 600;
+		overflow-wrap: anywhere;
+	}
+	.type {
+		font: var(--text-dense);
+		color: var(--mm-text-2);
+	}
+	.mm-tag mm-icon {
+		margin-inline-end: 2px;
+	}
+	.description {
+		margin: 0;
+		max-inline-size: 72ch;
+		font: var(--text-dense);
+		color: var(--mm-text-2);
+	}
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1) var(--space-4);
+		margin: 0;
+		font: var(--text-caption);
+		color: var(--mm-text-2);
+	}
+	.meta .term {
+		font-weight: 600;
+	}
+	.children {
+		margin: var(--space-2) 0 0;
+		padding: 0;
+		padding-inline-start: var(--space-4);
+		list-style: none;
+		border-inline-start: 1px solid var(--mm-rule);
+	}
+	.children > :global(.field) {
+		padding-block: var(--space-2);
+	}
+</style>
