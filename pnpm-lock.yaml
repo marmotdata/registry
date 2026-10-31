@@ -9,21 +9,21 @@ importers:
   .:
     dependencies:
       '@marmotdata/css':
-        specifier: 0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       '@marmotdata/elements':
-        specifier: 0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       '@marmotdata/icons':
-        specifier: 0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       '@marmotdata/tokens':
-        specifier: 0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
     devDependencies:
       '@marmotdata/svelte':
-        specifier: 0.1.2
-        version: 0.1.2(@marmotdata/elements@0.1.2)(svelte@5.56.4)
+        specifier: ^0.1.3
+        version: 0.1.3(@marmotdata/elements@0.1.3)(svelte@5.56.4)
       '@sveltejs/adapter-static':
         specifier: ^3.0.10
         version: 3.0.10(@sveltejs/kit@2.69.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.4)(vite@6.4.3(@types/node@24.13.3)))(svelte@5.56.4)(typescript@5.9.3)(vite@6.4.3(@types/node@24.13.3)))
@@ -286,8 +286,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lezer/common@1.5.4':
-    resolution: {integrity: sha512-xt3Q4z64xM+xhg4M7NXqw1N//1O74bUFo5kz6fwMeC4qwxSuRdwkYSmjcqCEEKYkNw5e67f2hcNqBoNERAEU0w==}
+  '@lezer/common@1.5.5':
+    resolution: {integrity: sha512-Pw7PVCndruF1pb3ebCxpSVpkMHSDjwRCLcTRw+RizUKco5QbWylwq2g4lnG/RYN7yTTQDXE9F77MwtkAyphrjg==}
 
   '@lezer/highlight@1.2.5':
     resolution: {integrity: sha512-O1GMVKgtf5YspFaRzpmqkVgMtIk2HG9uMAbH6wdAIdNh3TVzCsch/+cRi+6l2//UGDKe6NB9BW3cvuR5ezMQ0w==}
@@ -295,8 +295,8 @@ packages:
   '@lezer/json@1.0.3':
     resolution: {integrity: sha512-BP9KzdF9Y35PDpv04r0VeSTKDeox5vVr3efE7eBbx3r4s3oNLfunchejZhjArmeieBH+nVOpgIiBJpEAv8ilqQ==}
 
-  '@lezer/lr@1.4.11':
-    resolution: {integrity: sha512-UwgZcl1R66H2hDzBrA7kWyYmX6s8p5TQ+e/t7CuvgCtBEPxbEPaHYHu+pJBvTvDotEJpuQkJjbXuHiw5Cixxgw==}
+  '@lezer/lr@1.4.12':
+    resolution: {integrity: sha512-On9HU4oMMiHPMkQDgoTnGahjgG5n/MkN38CgG77sMraKLL+3JBbeQNi1FcCXV9QRqwF9/BUXP3caHyJC1fBOTQ==}
 
   '@lezer/yaml@1.0.4':
     resolution: {integrity: sha512-2lrrHqxalACEbxIbsjhqGpSW8kWpUKuY6RHgnSAFZa6qK62wvnPxA8hGOwOoDbwHcOFs5M4o27mjGu+P7TvBmw==}
@@ -313,23 +313,23 @@ packages:
   '@marijn/find-cluster-break@1.0.4':
     resolution: {integrity: sha512-Wy0V7+SGUjnF9/TkiM1hKVDPj7jKXduPNboMVtHTA8dySMURWqfg/JZ9E2Sq8JgSJmkl7k7Qe9FLeMSrSraWmQ==}
 
-  '@marmotdata/css@0.1.2':
-    resolution: {integrity: sha512-AeKKmadUp8DaL278tnDSoephi3skDIgFfZs0qReXnE03vBzX0vVGuudMfEDFRBa2YNq0GRDQr6tT7moyYoU3nw==}
+  '@marmotdata/css@0.1.3':
+    resolution: {integrity: sha512-5thW/D7Evaohd1+AkWeRd+nb9AE3H8DB5vHh7CBpDayzTXFRAzxwU5H1r6W841I3Qxk/w3XuaZTfHL0/iPI5OA==}
 
-  '@marmotdata/elements@0.1.2':
-    resolution: {integrity: sha512-59UdMmSNN6EfGKTGRWYVkRftsfGhWR6YTi6AKehkgd4XkoznvUednM2jB29rLyOkAhBJe075HEeoe9+i7bwZfQ==}
+  '@marmotdata/elements@0.1.3':
+    resolution: {integrity: sha512-nKSstk468nQDxIhqCXQdBaZhnx/iCudU7AE5y8oh2yyMknPAafkpgwpUNAOoFPFyVXpWnqQY5Bqtj9gjK3AQqg==}
 
-  '@marmotdata/icons@0.1.2':
-    resolution: {integrity: sha512-5I4d13h9+x7oPQFFK8KWUC2pBgbv7PzhpuuWGQWhTNWY5+wU3zLqPr8XE+8DrCM0IIP7HXgE7d1Dz6a88+VfsA==}
+  '@marmotdata/icons@0.1.3':
+    resolution: {integrity: sha512-huC1o4HCLnieuUIDgh5h1DbSJlrm7qlAelnWH41+ZExJovPgxjnj1pPBqSO7q7athwKnUcqmOF+00orO4cj5sg==}
 
-  '@marmotdata/svelte@0.1.2':
-    resolution: {integrity: sha512-bgytYM4n7QDg6Er62JinuJwdzgtrUZtxkMs6pRF4ehf3eSGEnZrHCQqnazyUGgaXhi1M5/9cofs5j/3dPvsXxg==}
+  '@marmotdata/svelte@0.1.3':
+    resolution: {integrity: sha512-ZEWYjEUCvqGt9wh1+zMh9gah6pC2Bi4kzCzu84+FdKIWpIg0S/LBOU/p0rIYQgH5FLRgGFk8zWj8PlGbZdQP3w==}
     peerDependencies:
-      '@marmotdata/elements': ^0.1.2
+      '@marmotdata/elements': ^0.1.3
       svelte: ^5.0.0
 
-  '@marmotdata/tokens@0.1.2':
-    resolution: {integrity: sha512-gzdGqxXoXYl/fCIw0ICbNkO7aHadeB5CHvYL2IMenjKARH1eDNwAkC5H4uqNV912L+raosGwwibc/sB+uftmVg==}
+  '@marmotdata/tokens@0.1.3':
+    resolution: {integrity: sha512-Zp8EnbVFnwSKYuxvQ7QtyrDUSKY6Yjo/Dr60MeLqaCGK8A7FfVNOymqTkACMAgwF0TbcLL/NHYpsje3cLtI0SA==}
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
@@ -876,14 +876,14 @@ snapshots:
       '@codemirror/language': 6.13.1
       '@codemirror/state': 6.7.6
       '@codemirror/view': 6.43.15
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
 
   '@codemirror/commands@6.11.1':
     dependencies:
       '@codemirror/language': 6.13.1
       '@codemirror/state': 6.7.6
       '@codemirror/view': 6.43.15
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
 
   '@codemirror/lang-json@6.0.2':
     dependencies:
@@ -895,18 +895,18 @@ snapshots:
       '@codemirror/autocomplete': 6.20.4
       '@codemirror/language': 6.13.1
       '@codemirror/state': 6.7.6
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
       '@lezer/highlight': 1.2.5
-      '@lezer/lr': 1.4.11
+      '@lezer/lr': 1.4.12
 
   '@codemirror/lang-yaml@6.1.3':
     dependencies:
       '@codemirror/autocomplete': 6.20.4
       '@codemirror/language': 6.13.1
       '@codemirror/state': 6.7.6
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
       '@lezer/highlight': 1.2.5
-      '@lezer/lr': 1.4.11
+      '@lezer/lr': 1.4.12
       '@lezer/yaml': 1.0.4
 
   '@codemirror/language@6.13.1':
@@ -914,9 +914,9 @@ snapshots:
       '@codemirror/state': 6.7.6
       '@codemirror/streamparser': 6.0.0
       '@codemirror/view': 6.43.15
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
       '@lezer/highlight': 1.2.5
-      '@lezer/lr': 1.4.11
+      '@lezer/lr': 1.4.12
       style-mod: 4.1.4
 
   '@codemirror/lint@6.9.7':
@@ -1058,27 +1058,27 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lezer/common@1.5.4': {}
+  '@lezer/common@1.5.5': {}
 
   '@lezer/highlight@1.2.5':
     dependencies:
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
 
   '@lezer/json@1.0.3':
     dependencies:
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
       '@lezer/highlight': 1.2.5
-      '@lezer/lr': 1.4.11
+      '@lezer/lr': 1.4.12
 
-  '@lezer/lr@1.4.11':
+  '@lezer/lr@1.4.12':
     dependencies:
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
 
   '@lezer/yaml@1.0.4':
     dependencies:
-      '@lezer/common': 1.5.4
+      '@lezer/common': 1.5.5
       '@lezer/highlight': 1.2.5
-      '@lezer/lr': 1.4.11
+      '@lezer/lr': 1.4.12
 
   '@lit-labs/ssr-dom-shim@1.6.0': {}
 
@@ -1093,11 +1093,11 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.4': {}
 
-  '@marmotdata/css@0.1.2':
+  '@marmotdata/css@0.1.3':
     dependencies:
-      '@marmotdata/tokens': 0.1.2
+      '@marmotdata/tokens': 0.1.3
 
-  '@marmotdata/elements@0.1.2':
+  '@marmotdata/elements@0.1.3':
     dependencies:
       '@codemirror/autocomplete': 6.20.4
       '@codemirror/commands': 6.11.1
@@ -1112,8 +1112,8 @@ snapshots:
       '@floating-ui/dom': 1.8.0
       '@lezer/highlight': 1.2.5
       '@lit-labs/virtualizer': 2.1.1
-      '@marmotdata/icons': 0.1.2
-      '@marmotdata/tokens': 0.1.2
+      '@marmotdata/icons': 0.1.3
+      '@marmotdata/tokens': 0.1.3
       '@tanstack/virtual-core': 3.19.8
       codemirror: 6.0.2
       d3-array: 3.2.4
@@ -1125,17 +1125,17 @@ snapshots:
       lit: 3.3.3
       tslib: 2.8.1
 
-  '@marmotdata/icons@0.1.2':
+  '@marmotdata/icons@0.1.3':
     dependencies:
       lit: 3.3.3
       tslib: 2.8.1
 
-  '@marmotdata/svelte@0.1.2(@marmotdata/elements@0.1.2)(svelte@5.56.4)':
+  '@marmotdata/svelte@0.1.3(@marmotdata/elements@0.1.3)(svelte@5.56.4)':
     dependencies:
-      '@marmotdata/elements': 0.1.2
+      '@marmotdata/elements': 0.1.3
       svelte: 5.56.4
 
-  '@marmotdata/tokens@0.1.2': {}
+  '@marmotdata/tokens@0.1.3': {}
 
   '@polka/url@1.0.0-next.29': {}
 
