@@ -104,7 +104,8 @@
 					onclick={toggleTheme}
 				></mm-button>
 			{/if}
-			<mm-button size="sm" href="https://demo.marmotdata.io" external>Try the demo</mm-button>
+			<mm-button class="sign-in" variant="ghost" href="https://cloud.marmotdata.io/login">Sign in</mm-button>
+			<mm-button variant="primary" href="https://cloud.marmotdata.io/signup">Start for free</mm-button>
 		</div>
 	</div>
 
@@ -194,7 +195,7 @@
 		gap: var(--space-1);
 		margin-inline-start: auto;
 	}
-	.end mm-button:last-child {
+	.end .sign-in {
 		margin-inline-start: var(--space-2);
 	}
 	.menu-toggle {
@@ -212,7 +213,8 @@
 		.menu-toggle {
 			display: contents;
 		}
-		.nav {
+		.nav,
+		.end .sign-in {
 			display: none;
 		}
 		.menu {

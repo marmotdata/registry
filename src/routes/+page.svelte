@@ -89,7 +89,6 @@
 	const activeFilterCount = $derived(
 		selectedTiers.length + selectedCategories.length + selectedFeatures.length
 	);
-	const officialCount = $derived(tierCounts.get('official') ?? 0);
 
 	function toggle<T>(list: T[], value: T): T[] {
 		return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
@@ -168,12 +167,8 @@
 
 <!-- Hero ------------------------------------------------------------------ -->
 <section class="hero mm-topography mm-topography--fade-edges" aria-labelledby="hero-title">
-	<p class="mm-label">Marmot Plugin Registry</p>
 	<h1 id="hero-title" class="mm-display-hero">Plugins for every corner of your data stack</h1>
-	<p class="lead">
-		Connect Marmot to the sources you already run. Each plugin discovers assets, captures lineage and
-		keeps your catalog current.
-	</p>
+	<p class="lead">Connect Marmot to the tools you already run.</p>
 
 	<mm-search-field
 		class="search"
@@ -186,14 +181,6 @@
 		oninput={(e: Event) => (query = (e.currentTarget as HTMLInputElement).value)}
 	></mm-search-field>
 
-	<ul class="stats">
-		<li><span class="mm-num">{data.pluginCount}</span> plugins</li>
-		<li><span class="mm-num">{categories.length}</span> categories</li>
-		<li><span class="mm-num">{officialCount}</span> maintained by Marmot</li>
-		<li>
-			<a href="#secret-stores"><span class="mm-num">{data.secretStores.length}</span> secret stores</a>
-		</li>
-	</ul>
 </section>
 
 <!-- Browse ---------------------------------------------------------------- -->
@@ -335,32 +322,8 @@
 	}
 	.search {
 		inline-size: min(100%, 40rem);
-		margin-block-start: var(--space-2);
+		margin-block-start: var(--space-4);
 		text-align: start;
-	}
-	.stats {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: var(--space-2) var(--space-6);
-		padding: 0;
-		list-style: none;
-		font: var(--text-dense);
-		color: var(--mm-text-2);
-	}
-	.stats .mm-num {
-		font-weight: 600;
-		color: var(--mm-text);
-	}
-	.stats a {
-		color: inherit;
-		text-decoration: underline;
-		text-underline-offset: 2px;
-		text-decoration-thickness: 1px;
-	}
-	.stats a:hover {
-		color: var(--mm-text);
-		text-decoration-thickness: 2px;
 	}
 
 	.browse {
