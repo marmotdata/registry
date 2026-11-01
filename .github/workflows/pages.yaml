@@ -1,18 +1,32 @@
 name: Deploy to GitHub Pages
 
+# Besides the site, this publishes the signed plugin index running Marmots read to offer plugin
+# updates: to plugins.marmotdata.io/index.json and, beside the plugins, to
+# ghcr.io/marmotdata/plugins/index. A plugin release in marmotdata/marmot triggers it through
+# repository_dispatch so new versions and their advisories reach Marmots promptly, and the daily
+# run republishes the index well before its 14-day expiry.
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [plugin-released]
+  schedule:
+    - cron: "17 3 * * *"
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
+  packages: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
+
+env:
+  INDEX_REPOSITORY: ghcr.io/marmotdata/plugins/index
+  PLUGIN_INDEX_KEY_ID: marmot-plugins-2026
 
 jobs:
   build:
@@ -29,8 +43,56 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # Releases are picked up from GHCR rather than written by hand. Pushes to main are edits to
+      # plugins.yaml itself, so only the other triggers sync.
+      - name: Sync plugin versions
+        if: github.event_name != 'push'
+        run: |
+          node scripts/sync-plugin-versions.mjs
+          if ! git diff --quiet plugins.yaml; then
+            git config user.name marmot-registry-bot
+            git config user.email marmot-registry-bot@marmotdata.io
+            git commit -m "chore: sync plugin versions" plugins.yaml
+            git push
+          fi
+
+      - name: Build data
+        run: pnpm prebuild:data
+
+      - name: Sign plugin index
+        env:
+          PLUGIN_INDEX_SIGNING_KEY: ${{ secrets.PLUGIN_INDEX_SIGNING_KEY }}
+        run: node scripts/sign-index.mjs
+
       - name: Build site
-        run: pnpm build
+        run: pnpm exec vite build
+
+      - name: Check the signed index is in the site
+        run: test -s build/index.json && test -s build/index.json.sig
+
+      - uses: oras-project/setup-oras@v2
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push plugin index
+        working-directory: build
+        run: |
+          set -euo pipefail
+          version=$(jq -r .version index.json)
+          oras push "${INDEX_REPOSITORY}:latest,${version}" \
+            --artifact-type application/vnd.marmot.plugin.index.v1 \
+            --annotation "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
+            "index.json:application/vnd.marmot.plugin.index.v1+json" \
+            "index.json.sig:application/vnd.marmot.plugin.index.signature.v1+json"
+          {
+            echo "### Plugin index ${version}"
+            echo "Plugins: $(jq '.plugins | length' index.json), advisories: $(jq '[.plugins[].advisories // [] | length] | add' index.json)"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-pages-artifact@v3
         with:

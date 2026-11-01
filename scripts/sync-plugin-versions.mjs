@@ -2,10 +2,16 @@
 // tag not already listed fetches its index digest and appends a new
 // version entry. Format-preserving edit (no YAML round-trip).
 //
+// The release workflow annotates each version with the Marmot releases it
+// supports, its plugin protocol and when it was built; those are copied in
+// as marmot_version, protocol_version and released so the plugin index can
+// offer each version only to the Marmots it works with.
+//
 // Usage:
 //   node scripts/sync-plugin-versions.mjs              # all plugins
 //   node scripts/sync-plugin-versions.mjs --only kafka,s3
 
+import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -84,8 +90,8 @@ for (const plugin of plugins) {
 	}
 	for (const version of missing) {
 		try {
-			const digest = await fetchDigest(repo, version);
-			out = insertVersion(out, plugin, version, digest);
+			const { digest, annotations } = await fetchVersion(repo, version);
+			out = insertVersion(out, plugin, version, digest, annotations);
 			added.push(`${label}@${version} → ${digest}`);
 		} catch (err) {
 			errors.push(`${label}@${version} — ${err.message}`);
@@ -149,34 +155,50 @@ async function listTags(repoRef) {
 	return tags;
 }
 
-async function fetchDigest(repoRef, tag) {
+// fetchVersion reads a version's image index: its digest, and the annotations
+// the release workflow put on it.
+async function fetchVersion(repoRef, tag) {
 	const slash = repoRef.indexOf('/');
 	const host = repoRef.slice(0, slash);
 	const repo = repoRef.slice(slash + 1);
 	const url = `https://${host}/v2/${repo}/manifests/${tag}`;
-	const res = await client(host).request(url, {
-		method: 'HEAD',
-		headers: { Accept: INDEX_ACCEPT }
-	});
+	const res = await client(host).request(url, { headers: { Accept: INDEX_ACCEPT } });
 	if (res.status === 404) throw new Error(`tag ${tag} not found`);
 	if (!res.ok) throw new Error(`manifest ${res.status}`);
-	const digest = res.headers.get('docker-content-digest');
-	if (!digest) throw new Error('no docker-content-digest header');
-	return digest;
+	const body = Buffer.from(await res.arrayBuffer());
+	const digest = 'sha256:' + createHash('sha256').update(body).digest('hex');
+	const header = res.headers.get('docker-content-digest');
+	if (header && header !== digest) throw new Error(`registry digest ${header} does not match content ${digest}`);
+	let annotations = {};
+	try {
+		annotations = JSON.parse(body.toString('utf8')).annotations ?? {};
+	} catch {
+		// A manifest without annotations is fine: the version just supports every Marmot.
+	}
+	return { digest, annotations };
 }
 
-function insertVersion(source, plugin, version, digest) {
+// insertVersion appends a version after the plugin's last version entry,
+// including any fields that entry carries beyond its digest.
+function insertVersion(source, plugin, version, digest, annotations) {
 	const header = `  - namespace: ${plugin.namespace}\n    name: ${plugin.name}\n`;
 	const start = source.indexOf(header);
 	if (start === -1) throw new Error('plugin block not found in yaml');
 	const nextStart = source.indexOf('\n  - namespace:', start + header.length);
 	const blockEnd = nextStart === -1 ? source.length : nextStart + 1;
 	const block = source.slice(start, blockEnd);
-	const digestRe = /^ {8}digest: sha256:[a-f0-9]+\n/gm;
-	const matches = [...block.matchAll(digestRe)];
-	if (matches.length === 0) throw new Error('no existing digest line to anchor insertion');
+	const versionRe = /^ {6}- version: .*\n(?: {8}.*\n)*/gm;
+	const matches = [...block.matchAll(versionRe)];
+	if (matches.length === 0) throw new Error('no existing version entry to anchor insertion');
 	const last = matches[matches.length - 1];
 	const insertAt = start + last.index + last[0].length;
-	const insertion = `      - version: ${version}\n        digest: ${digest}\n`;
+
+	let insertion = `      - version: ${version}\n        digest: ${digest}\n`;
+	const marmotVersion = annotations['io.marmotdata.plugin.marmot-version'];
+	if (marmotVersion) insertion += `        marmot_version: "${marmotVersion}"\n`;
+	const protocol = Number(annotations['io.marmotdata.plugin.protocol-version']);
+	if (protocol && protocol !== 1) insertion += `        protocol_version: ${protocol}\n`;
+	const created = annotations['org.opencontainers.image.created'];
+	if (created) insertion += `        released: ${created}\n`;
 	return source.slice(0, insertAt) + insertion + source.slice(insertAt);
 }

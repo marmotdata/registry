@@ -47,6 +47,24 @@
 	let latest = $derived(plugin.versions.at(-1));
 	let pluginId = $derived(`${plugin.namespace}/${plugin.name}`);
 	let pluginHref = $derived(`${base}/${plugin.namespace}/${plugin.name}`);
+	/** Advisories against the version being viewed, most severe first. */
+	let advisories = $derived(
+		(plugin.advisories ?? [])
+			.filter((a) => version.advisories?.includes(a.id))
+			.sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity))
+	);
+
+	const SEVERITY_ORDER = ['critical', 'high', 'moderate', 'low'];
+
+	function severityLabel(severity: string): string {
+		return severity.charAt(0).toUpperCase() + severity.slice(1);
+	}
+
+	/** Where to send someone off a vulnerable version: the fixed release's page. */
+	function fixedHref(fixed: string): string {
+		const v = plugin.versions.find((x) => x.version === fixed);
+		return v ? versionHref(v) : pluginHref;
+	}
 
 	/** Latest lives at the plain plugin URL; every other version under /v/. */
 	function versionHref(v: PluginVersion): string {
@@ -180,11 +198,26 @@
 		{#if status}
 			<mm-status-pill status={status.tone} icon={status.icon}>{status.label}</mm-status-pill>
 		{/if}
+		{#if version.marmot_version}
+			<span class="mm-tag" title="The Marmot releases this version works with"
+				><mm-icon name="extension" size={14}></mm-icon>Marmot {version.marmot_version}</span
+			>
+		{/if}
+		{#if advisories.length > 0}
+			<mm-status-pill status="danger" icon="shield">Security advisory</mm-status-pill>
+		{/if}
+		{#if version.yanked}
+			<mm-status-pill status="warning" icon="block">Yanked</mm-status-pill>
+		{/if}
 	</span>
 	{#if plugin.versions.length > 1}
 		<mm-select slot="actions" class="version" label="Version" hide-label value={version.version} onchange={onVersionChange}>
 			{#each plugin.versions.slice().reverse() as v (v.version)}
-				<mm-option value={v.version}>Version {v.version}{v === latest ? ' (latest)' : ''}</mm-option>
+				<mm-option value={v.version}
+					>Version {v.version}{v === latest ? ' (latest)' : ''}{v.yanked ? ' (yanked)' : ''}{v.advisories?.length
+						? ' (security advisory)'
+						: ''}</mm-option
+				>
 			{/each}
 		</mm-select>
 	{/if}
@@ -196,6 +229,24 @@
 	{/if}
 	<mm-button slot="actions" variant="primary" icon="download" onclick={install}>Install</mm-button>
 </mm-page-header>
+
+{#each advisories as advisory (advisory.id)}
+	<mm-callout class="notice" tone="danger" heading="{severityLabel(advisory.severity)} security advisory {advisory.id}">
+		{advisory.summary} Fixed in version {advisory.fixed}. Marmot moves plugins off affected versions automatically
+		unless auto-update is turned off or the plugin is pinned.
+		<mm-button slot="actions" size="sm" variant="primary" href={fixedHref(advisory.fixed)}>View {advisory.fixed}</mm-button>
+		{#if advisory.url}
+			<mm-link slot="actions" href={advisory.url} external>Read the advisory</mm-link>
+		{/if}
+	</mm-callout>
+{/each}
+
+{#if version.yanked}
+	<mm-callout class="notice" tone="warning" heading="This version has been yanked">
+		{version.yanked_reason ?? 'It is no longer offered for installation.'} Marmot never installs a yanked version, though
+		an install already running it keeps it until it moves.
+	</mm-callout>
+{/if}
 
 {#if !isLatest && latest}
 	<mm-callout class="notice" tone="warning" heading="This is an older version">

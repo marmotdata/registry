@@ -5,7 +5,8 @@
 	"type": "module",
 	"packageManager": "pnpm@11.3.0",
 	"scripts": {
-		"prebuild:data": "node scripts/build.mjs && node scripts/pull-plugin-artifacts.mjs && node scripts/render-docs.mjs",
+		"prebuild:data": "node scripts/build.mjs && node scripts/build-index.mjs && node scripts/pull-plugin-artifacts.mjs && node scripts/render-docs.mjs",
+		"sign-index": "node scripts/sign-index.mjs",
 		"pull-plugin-artifacts": "node scripts/pull-plugin-artifacts.mjs",
 		"sync-plugin-versions": "node scripts/sync-plugin-versions.mjs",
 		"dev": "pnpm prebuild:data && vite dev",
@@ -15,7 +16,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
 	},
 	"devDependencies": {
-		"@marmotdata/svelte": "^0.1.3",
+		"@marmotdata/svelte": "^0.1.4",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.61.1",
 		"@sveltejs/vite-plugin-svelte": "^5.1.1",
@@ -31,9 +32,9 @@
 		"vite": "^6.4.3"
 	},
 	"dependencies": {
-		"@marmotdata/css": "^0.1.3",
-		"@marmotdata/elements": "^0.1.3",
-		"@marmotdata/icons": "^0.1.3",
-		"@marmotdata/tokens": "^0.1.3"
+		"@marmotdata/css": "^0.1.4",
+		"@marmotdata/elements": "^0.1.4",
+		"@marmotdata/icons": "^0.1.4",
+		"@marmotdata/tokens": "^0.1.4"
 	}
 }

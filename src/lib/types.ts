@@ -2,6 +2,22 @@ export interface PluginVersion {
 	version: string;
 	digest: string;
 	oci_ref: string;
+	/** Semver constraint on the Marmot releases this version works with; null means every release. */
+	marmot_version: string | null;
+	yanked: boolean;
+	yanked_reason: string | null;
+	/** IDs of the plugin's advisories that apply to this version. */
+	advisories: string[];
+}
+
+export interface PluginAdvisory {
+	id: string;
+	severity: 'low' | 'moderate' | 'high' | 'critical';
+	affected: string;
+	fixed: string;
+	summary: string;
+	url: string | null;
+	published: string | null;
 }
 
 export interface Plugin {
@@ -17,6 +33,7 @@ export interface Plugin {
 	source: string | null;
 	latest_version: string | null;
 	versions: PluginVersion[];
+	advisories: PluginAdvisory[];
 }
 
 export interface SecretStore {

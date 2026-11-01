@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { load } from 'js-yaml';
+import { constraint } from './semver.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const yamlPath = resolve(here, '..', 'plugins.yaml');
@@ -35,10 +36,25 @@ function resolveOci(plugin, version) {
 }
 
 const plugins = src.plugins.map((p) => {
+	const advisories = (p.advisories ?? []).map((a) => ({
+		id: a.id,
+		severity: a.severity,
+		affected: String(a.affected),
+		fixed: String(a.fixed),
+		summary: a.summary,
+		url: a.url ?? null,
+		published: a.published ? new Date(a.published).toISOString() : null,
+		affects: constraint(a.affected)
+	}));
 	const versions = (p.versions ?? []).map((v) => ({
 		version: v.version,
 		digest: v.digest,
-		oci_ref: resolveOci(p, v)
+		oci_ref: resolveOci(p, v),
+		marmot_version: v.marmot_version ? String(v.marmot_version) : null,
+		yanked: v.yanked === true,
+		yanked_reason: v.yanked_reason ?? null,
+		// IDs of the advisories that apply to this version, so pages need no semver of their own.
+		advisories: advisories.filter((a) => a.affects(String(v.version))).map((a) => a.id)
 	}));
 	return {
 		namespace: p.namespace,
@@ -52,7 +68,8 @@ const plugins = src.plugins.map((p) => {
 		official: p.official === true,
 		source: p.source ?? null,
 		latest_version: versions.at(-1)?.version ?? null,
-		versions
+		versions,
+		advisories: advisories.map(({ affects, ...a }) => a)
 	};
 });
 

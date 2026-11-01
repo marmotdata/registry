@@ -2,6 +2,29 @@
 #
 # Human-editable. Run `pnpm build` (or `node scripts/build.mjs`) to regenerate
 # plugins.json, which is what external apps consume.
+#
+# This file is also the source of the signed plugin index (static/index.json)
+# that running Marmots read to update core plugins without a Marmot upgrade.
+# Versions are added by scripts/sync-plugin-versions.mjs from GHCR, with the
+# compatibility the release recorded. Optional fields, by hand:
+#
+#   versions:
+#     - version: 0.3.2
+#       digest: sha256:...
+#       marmot_version: ">=0.14.0"   # Marmot releases it supports (synced)
+#       yanked: true                 # never offered or auto-installed again
+#       yanked_reason: Breaks discovery on PostgreSQL 12.
+#   advisories:                      # per plugin, beside versions
+#     - id: MPA-2026-001
+#       severity: high               # low, moderate, high or critical
+#       affected: "<0.3.1"           # semver constraint on plugin versions
+#       fixed: 0.3.1                 # must already be published
+#       summary: One sentence on what is affected, without exploit detail.
+#       url: https://github.com/marmotdata/marmot/security/advisories/...
+#       published: 2026-11-01T00:00:00Z
+#
+# Only add an advisory once its fix is released: the index is public and
+# Marmots on the default "security" auto-update policy act on it.
 
 schema_version: 1
 
