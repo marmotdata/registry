@@ -171,6 +171,10 @@ plugins:
         digest: sha256:908e443a1502cf30316f8cd6d5377bf30ae781900330d22076393baff31d2a01
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:23:56Z
+      - version: 0.4.0
+        digest: sha256:72d88565f2c305bb93cdd482bef5662a2e78e684f795ff3a06ef2a69c7a41544
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:41:22Z
 
 
   - namespace: marmotdata
@@ -240,6 +244,10 @@ plugins:
         digest: sha256:b7db3a54d21438a47b71d983e2476081a01aacc2aa833e87baba0832166b2648
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:23:19Z
+      - version: 0.4.0
+        digest: sha256:ecd35e1b50ae929f0de0f2e9001ba4a8271b2531608ba5cc9730c22d588416fc
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:41:49Z
 
 
   - namespace: marmotdata
@@ -287,6 +295,10 @@ plugins:
         digest: sha256:edef0a787563bc77cf275226d9c3dbef31aa7cfc4952e5974ccdb40ff0d75b76
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:23:02Z
+      - version: 0.4.0
+        digest: sha256:b38fc57d275935f5db780939fcc92a0e28c489d340c39f2a483a27366c944f6d
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:41:03Z
 
   - namespace: marmotdata
     name: confluent
@@ -440,6 +452,10 @@ plugins:
         digest: sha256:4e86e96b282da82c3f15be8938ea2fbeae0e8e73716f4b30585d2b60eee11855
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:25:46Z
+      - version: 0.4.0
+        digest: sha256:cf7fca85141008122b329e4190c7cef663132081e5f119ae81ac8a5a9d6024dd
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:43:31Z
 
 
   - namespace: marmotdata
@@ -912,6 +928,10 @@ plugins:
         digest: sha256:82144b3d48b85262e69fe69294a219acf149f6d3340bc8014b7758415a1814cb
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:24:39Z
+      - version: 0.4.0
+        digest: sha256:4b3a20bb352f30a281931cdc3bd77303f517acee36888f3e12274d474e748417
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:40:50Z
 
   - namespace: marmotdata
     name: metabase
@@ -1023,6 +1043,10 @@ plugins:
         digest: sha256:eb7113c84dd4704c0d46a017c20c944cca865b7fd4edc8bde834dc7751eedc2e
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:25:08Z
+      - version: 0.4.0
+        digest: sha256:f6b966ad21305b93fb2af6e0513b33ec667afd283bacd28216e228597b03b45c
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:40:47Z
 
 
   - namespace: marmotdata
@@ -1158,6 +1182,10 @@ plugins:
         digest: sha256:63339f475c001058ed450aec4a71b821627274954ba9a532d96714b76c4f279e
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:25:21Z
+      - version: 0.4.0
+        digest: sha256:da4f521ab6bbeaa28394566a10b92749c2c56cdf03ab7f908e9792c748ac77e6
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:40:55Z
 
   - namespace: marmotdata
     name: pinot
@@ -1501,6 +1529,10 @@ plugins:
         digest: sha256:fb14be8aa5500e3f6fad2d7b9f94104adcc0422a75a72bd8bee1552ad42a294f
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:27:35Z
+      - version: 0.4.0
+        digest: sha256:6cea6ce78536f53d525bb8c7284726ff9cdcb3018eec3a8cd38c2959886fe96a
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:43:17Z
 
 
   - namespace: marmotdata
@@ -1593,6 +1625,10 @@ plugins:
         digest: sha256:b5196d7a079778bf6d5fad7dc689ca8a38f76ac6302bb429e77997684e866536
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:26:05Z
+      - version: 0.4.0
+        digest: sha256:3fdf665001e1e7aaf35647777d3b946fd2f0bec1d9dc6fa184a64b065a13a4f1
+        marmot_version: ">=0.12.0"
+        released: 2026-11-01T23:40:11Z
 
   - namespace: marmotdata
     name: trino
