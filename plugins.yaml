@@ -1234,6 +1234,10 @@ plugins:
         digest: sha256:45fae4a5460b00221bebfa4471c403ca2de4d715efc5d7519cc348a67319ef7c
         marmot_version: ">=0.12.0"
         released: 2026-11-01T20:25:34Z
+      - version: 0.4.0
+        digest: sha256:3ab00198b073bf438c98c54212710f5fbc6620c23bc017ace201ad6df44d7a5f
+        marmot_version: ">=0.12.0"
+        released: 2026-11-03T19:13:30Z
 
 
   - namespace: marmotdata
