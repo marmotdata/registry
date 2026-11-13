@@ -16,7 +16,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
 	},
 	"devDependencies": {
-		"@marmotdata/svelte": "^0.1.4",
+		"@marmotdata/svelte": "^0.1.8",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.61.1",
 		"@sveltejs/vite-plugin-svelte": "^5.1.1",
@@ -32,9 +32,9 @@
 		"vite": "^6.4.3"
 	},
 	"dependencies": {
-		"@marmotdata/css": "^0.1.4",
-		"@marmotdata/elements": "^0.1.4",
-		"@marmotdata/icons": "^0.1.4",
-		"@marmotdata/tokens": "^0.1.4"
+		"@marmotdata/css": "^0.1.8",
+		"@marmotdata/elements": "^0.1.8",
+		"@marmotdata/icons": "^0.1.8",
+		"@marmotdata/tokens": "^0.1.8"
 	}
 }

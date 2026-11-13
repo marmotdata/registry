@@ -150,6 +150,8 @@ export interface FeatureInfo {
 const FEATURES: Record<string, Omit<FeatureInfo, 'name'>> = {
 	Assets: { description: 'Discovers assets and their schemas', icon: 'inventory-2' },
 	Lineage: { description: 'Captures upstream and downstream lineage', icon: 'account-tree' },
+	'Column Lineage': { description: 'Traces lineage column by column, through views and models', icon: 'view-column' },
+	Queries: { description: 'Answers governed data queries run through Marmot', icon: 'terminal' },
 	'Run History': { description: 'Records pipeline and job runs', icon: 'history' },
 	Glossary: { description: 'Imports business glossary terms', icon: 'book-2' }
 };
