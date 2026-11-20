@@ -367,6 +367,10 @@ plugins:
         digest: sha256:1912134061905228200ef827556540332e9905e604247a0d9b877c8c569a5116
         marmot_version: ">=0.13.0"
         released: 2026-11-09T19:42:38Z
+      - version: 0.5.0
+        digest: sha256:9a0cbc302f77bcad2df590df1ad2734645360f38137179d221b3ccf68d936af9
+        marmot_version: ">=0.13.0"
+        released: 2026-11-19T13:22:01Z
 
 
   - namespace: marmotdata
@@ -1627,6 +1631,10 @@ plugins:
         digest: sha256:ff05e7ae1ad1595b04767d7eea7046ac169e7e3c2f00be2addb6a902d9f41b2f
         marmot_version: ">=0.13.0"
         released: 2026-11-09T19:43:26Z
+      - version: 0.5.0
+        digest: sha256:46e5575231656bb9cbde88a5470c2008e3ed184792ee0341c52cbaf5b890b2d7
+        marmot_version: ">=0.13.0"
+        released: 2026-11-19T13:21:24Z
 
 
   - namespace: marmotdata
